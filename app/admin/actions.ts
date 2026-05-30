@@ -58,6 +58,11 @@ export async function signInWithGoogle() {
 
   redirect(data.url);
 }
+
+function redirectWithError(path: string, message: string) {
+  redirect(`${path}?error=${encodeURIComponent(message)}`);
+}
+
 export async function signOut() {
   const supabase = await createSupabaseServerClient();
   await supabase.auth.signOut();
@@ -66,18 +71,27 @@ export async function signOut() {
 
 export async function upsertSettings(formData: FormData) {
   const supabase = await getAdminSupabase();
-  await supabase.from("church_settings").upsert({
-    id: "site",
-    hero_eyebrow: value(formData, "hero_eyebrow"),
-    hero_title: value(formData, "hero_title"),
-    hero_description: value(formData, "hero_description"),
-    service_time: value(formData, "service_time"),
-    address: value(formData, "address"),
-    email: value(formData, "email"),
-    giving_note: value(formData, "giving_note")
-  });
+  const { error } = await supabase.from("church_settings").upsert(
+    {
+      id: "site",
+      hero_eyebrow: value(formData, "hero_eyebrow"),
+      hero_title: value(formData, "hero_title"),
+      hero_description: value(formData, "hero_description"),
+      service_time: value(formData, "service_time"),
+      address: value(formData, "address"),
+      email: value(formData, "email"),
+      giving_note: value(formData, "giving_note")
+    },
+    { onConflict: "id" }
+  );
+
+  if (error) {
+    redirectWithError("/admin/settings", error.message);
+  }
+
   revalidatePath("/");
   revalidatePath("/admin/settings");
+  redirect("/admin/settings?saved=1");
 }
 
 export async function createSermon(formData: FormData) {

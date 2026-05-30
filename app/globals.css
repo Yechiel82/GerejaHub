@@ -698,3 +698,13 @@ textarea {
   flex: 1;
   background: var(--line);
 }
+
+
+.form-success {
+  border: 1px solid rgba(47, 95, 79, 0.24);
+  border-radius: 8px;
+  background: rgba(47, 95, 79, 0.1);
+  color: var(--green-dark);
+  padding: 12px;
+  font-weight: 800;
+}

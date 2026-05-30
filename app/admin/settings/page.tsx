@@ -4,10 +4,15 @@ import { fallbackSettings } from "@/lib/data/fallback";
 import { requireAdminUser } from "@/lib/supabase/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 
-export default async function SettingsPage() {
+export default async function SettingsPage({
+  searchParams
+}: {
+  searchParams: Promise<{ saved?: string; error?: string }>;
+}) {
+  const params = await searchParams;
   const user = await requireAdminUser();
   const supabase = await createSupabaseServerClient();
-  const { data } = await supabase.from("church_settings").select("*").eq("id", "site").maybeSingle();
+  const { data, error } = await supabase.from("church_settings").select("*").eq("id", "site").maybeSingle();
   const settings = data ?? fallbackSettings;
 
   return (
@@ -17,6 +22,9 @@ export default async function SettingsPage() {
         <h1>Settings</h1>
         <p>Update the homepage hero, visit details, and giving note.</p>
       </div>
+      {params.saved ? <p className="form-success">Settings saved.</p> : null}
+      {params.error ? <p className="form-error">{params.error}</p> : null}
+      {error ? <p className="form-error">{error.message}</p> : null}
       <form className="admin-form admin-panel" action={upsertSettings}>
         <label>
           Hero eyebrow
