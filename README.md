@@ -16,6 +16,7 @@ Phase 1 focuses on the public church website experience: visitor information, se
 - Supabase-backed public content
 - Admin login and protected dashboard
 - Admin forms for settings, sermons, events, and ministries
+- Member area with profiles and prayer requests
 - Web app manifest
 - Basic service worker for installable PWA behavior
 - Video-ready landing page hero with poster fallback
@@ -100,6 +101,25 @@ ffmpeg -ss 00:00:02 -t 8 -i original.mp4 -an -vf "scale=1280:-2,fps=24" -c:v lib
 ffmpeg -ss 00:00:02 -t 8 -i original.mp4 -an -vf "scale=1280:-2,fps=24" -c:v libx264 -profile:v high -pix_fmt yuv420p -movflags +faststart -crf 28 public/media/hero.mp4
 ```
 
+## Member Area
+
+Phase 3 adds member accounts and prayer requests.
+
+Run the updated `supabase/schema.sql` in Supabase SQL Editor after pulling Phase 3. This adds:
+
+- `profiles` with `admin`, `leader`, and `member` roles
+- `prayer_requests` for member-submitted prayer needs
+- RLS policies for member-owned requests and admin management
+
+Admins are bootstrapped from `ADMIN_EMAILS`. When one of those emails signs in, the server creates or updates that profile with the `admin` role. Everyone else starts as `member`.
+
+Member routes:
+
+- `/member/login`
+- `/member`
+- `/member/prayer`
+- `/member/profile`
+
 ## Google Login
 
 GerejaHub supports Google login through Supabase Auth.
@@ -133,7 +153,7 @@ npm run start
 
 - Phase 1: Public website and basic PWA setup
 - Phase 2: Supabase auth, database-backed content, and admin dashboard
-- Phase 3: Optional member login, prayer requests, notifications, and community features
+- Phase 3: Member login, profile roles, prayer requests, notifications, and community features
 
 ## License
 

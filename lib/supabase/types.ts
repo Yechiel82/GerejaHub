@@ -1,6 +1,66 @@
 export type Database = {
   public: {
     Tables: {
+      profiles: {
+        Row: {
+          id: string;
+          email: string;
+          full_name: string | null;
+          role: "admin" | "leader" | "member";
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id: string;
+          email: string;
+          full_name?: string | null;
+          role?: "admin" | "leader" | "member";
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          email?: string;
+          full_name?: string | null;
+          role?: "admin" | "leader" | "member";
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
+      prayer_requests: {
+        Row: {
+          id: string;
+          user_id: string;
+          name: string;
+          request: string;
+          visibility: "private" | "church";
+          status: "new" | "prayed" | "archived";
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          user_id: string;
+          name: string;
+          request: string;
+          visibility?: "private" | "church";
+          status?: "new" | "prayed" | "archived";
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: {
+          id?: string;
+          user_id?: string;
+          name?: string;
+          request?: string;
+          visibility?: "private" | "church";
+          status?: "new" | "prayed" | "archived";
+          created_at?: string;
+          updated_at?: string;
+        };
+        Relationships: [];
+      };
       church_settings: {
         Row: {
           id: string;
@@ -177,6 +237,8 @@ export type Database = {
   };
 };
 
+export type Profile = Database["public"]["Tables"]["profiles"]["Row"];
+export type PrayerRequest = Database["public"]["Tables"]["prayer_requests"]["Row"];
 export type ChurchSettings = Database["public"]["Tables"]["church_settings"]["Row"];
 export type Sermon = Database["public"]["Tables"]["sermons"]["Row"];
 export type ChurchEvent = Database["public"]["Tables"]["events"]["Row"];
