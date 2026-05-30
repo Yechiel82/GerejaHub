@@ -74,13 +74,20 @@ textarea {
   background: rgba(35, 31, 32, 0.05);
 }
 
-nav {
+nav,
+.nav-links,
+.nav-actions {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: flex-end;
-  gap: 18px;
+  gap: 16px;
   font-size: 0.94rem;
   font-weight: 650;
+}
+
+.nav-actions {
+  gap: 8px;
 }
 
 nav a {
@@ -91,13 +98,34 @@ nav a:hover {
   opacity: 1;
 }
 
+.nav-login,
+.nav-admin {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+
+.nav-login {
+  background: var(--green);
+  color: var(--white);
+  opacity: 1;
+}
+
+.nav-admin {
+  border: 1px solid var(--line);
+}
+
 .hero {
   position: relative;
-  min-height: 92vh;
+  min-height: 100vh;
   display: flex;
   align-items: flex-end;
   overflow: hidden;
-  padding: 130px clamp(18px, 5vw, 72px) 84px;
+  padding: 150px clamp(18px, 5vw, 72px) 72px;
   color: var(--white);
   background-image: url("/media/hero-poster.jpg");
   background-position: center;
@@ -366,7 +394,7 @@ textarea {
   }
 
   nav {
-    max-width: 330px;
+    max-width: 520px;
   }
 
   .visit-section,
@@ -393,16 +421,18 @@ textarea {
     margin: 12px;
   }
 
-  nav {
+  nav,
+  .nav-links,
+  .nav-actions {
     justify-content: flex-start;
-    gap: 12px;
+    gap: 10px;
     font-size: 0.86rem;
   }
 
   .hero {
-    min-height: 88vh;
+    min-height: 100vh;
     padding-top: 180px;
-    padding-bottom: 58px;
+    padding-bottom: 48px;
   }
 
   .hero-overlay {

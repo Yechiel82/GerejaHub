@@ -18,11 +18,18 @@ export default async function Home() {
           <span>GerejaHub</span>
         </a>
         <nav aria-label="Primary navigation">
-          {navItems.map((item) => (
-            <a key={item} href={`#${item.toLowerCase()}`}>
-              {item}
+          <div className="nav-links">
+            {navItems.map((item) => (
+              <a key={item} href={`#${item.toLowerCase()}`}>
+                {item}
+              </a>
+            ))}
+          </div>
+          <div className="nav-actions">
+            <a className="nav-login" href="/member/login">
+              Member Login
             </a>
-          ))}
+          </div>
         </nav>
       </header>
 
