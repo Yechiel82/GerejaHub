@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useEffect } from 'react'
 import { toggleMinistryMembership } from './actions'
 import { LoadingSpinner } from '@/app/components/loading'
 import type { Ministry } from '@/lib/supabase/types'
@@ -15,6 +15,11 @@ export function MinistryCard({ ministry, isMember: initialIsMember, memberRole }
   const [isPending, startTransition] = useTransition()
   const [isMember, setIsMember] = useState(initialIsMember)
   const [message, setMessage] = useState<string | null>(null)
+
+  // Sync local state with prop when it changes (e.g., after navigation)
+  useEffect(() => {
+    setIsMember(initialIsMember)
+  }, [initialIsMember])
 
   function handleToggleMembership() {
     startTransition(async () => {

@@ -61,6 +61,9 @@ create table if not exists public.ministries (
   id uuid primary key default gen_random_uuid(),
   name text not null,
   description text,
+  meeting_day text,
+  meeting_time text,
+  meeting_location text,
   sort_order integer not null default 0,
   published boolean not null default true,
   created_at timestamptz not null default now(),
@@ -205,16 +208,16 @@ values
   ('Prayer Gathering', null, 'Wednesday, 6:30 PM', 'Chapel Room', null, true)
 on conflict do nothing;
 
-insert into public.ministries (name, description, sort_order, published)
+insert into public.ministries (name, description, meeting_day, meeting_time, meeting_location, sort_order, published)
 values
-  ('Kids Ministry', 'Nurturing children''s faith through age-appropriate lessons, games, and activities. We create a safe and fun environment where kids can learn about Jesus and grow in their relationship with God.', 1, true),
-  ('Youth Ministry', 'Empowering teenagers to live out their faith boldly. We meet weekly for worship, Bible study, and fellowship, helping young people navigate life''s challenges with Christ at the center.', 2, true),
-  ('Worship Team', 'Leading the congregation in heartfelt worship through music and song. We practice weekly and serve during Sunday services, using our musical gifts to glorify God and inspire others.', 3, true),
-  ('Small Groups', 'Building authentic community through weekly gatherings in homes. These groups provide a space for deeper relationships, Bible study, prayer, and mutual support in our faith journey.', 4, true),
-  ('Outreach Ministry', 'Sharing God''s love beyond our church walls through community service, evangelism, and mission trips. We actively seek opportunities to serve our neighbors and spread the Gospel.', 5, true),
-  ('Prayer Ministry', 'Interceding for our church, community, and world. We meet regularly to pray together and are available to pray for specific needs and requests from our congregation.', 6, true),
-  ('Hospitality Team', 'Creating a welcoming atmosphere for visitors and members alike. We serve refreshments, greet guests, and ensure everyone feels at home in our church family.', 7, true),
-  ('Media Team', 'Supporting worship services through audio, video, and live streaming. We use technology to enhance the worship experience and extend our reach to those who can''t attend in person.', 8, true)
+  ('Kids Ministry', 'Nurturing children''s faith through age-appropriate lessons, games, and activities. We create a safe and fun environment where kids can learn about Jesus and grow in their relationship with God.', 'Every Sunday', '9:00 AM', 'Kids Room', 1, true),
+  ('Youth Ministry', 'Empowering teenagers to live out their faith boldly. We meet weekly for worship, Bible study, and fellowship, helping young people navigate life''s challenges with Christ at the center.', 'Every Friday', '7:00 PM', 'Youth Hall', 2, true),
+  ('Worship Team', 'Leading the congregation in heartfelt worship through music and song. We practice weekly and serve during Sunday services, using our musical gifts to glorify God and inspire others.', 'Every Thursday', '7:00 PM', 'Main Sanctuary', 3, true),
+  ('Small Groups', 'Building authentic community through weekly gatherings in homes. These groups provide a space for deeper relationships, Bible study, prayer, and mutual support in our faith journey.', 'Various days', 'Various times', 'Members'' Homes', 4, true),
+  ('Outreach Ministry', 'Sharing God''s love beyond our church walls through community service, evangelism, and mission trips. We actively seek opportunities to serve our neighbors and spread the Gospel.', 'Every Saturday', '9:00 AM', 'Church Parking Lot', 5, true),
+  ('Prayer Ministry', 'Interceding for our church, community, and world. We meet regularly to pray together and are available to pray for specific needs and requests from our congregation.', 'Every Wednesday', '6:00 AM', 'Prayer Room', 6, true),
+  ('Hospitality Team', 'Creating a welcoming atmosphere for visitors and members alike. We serve refreshments, greet guests, and ensure everyone feels at home in our church family.', 'Every Sunday', '8:00 AM', 'Fellowship Hall', 7, true),
+  ('Media Team', 'Supporting worship services through audio, video, and live streaming. We use technology to enhance the worship experience and extend our reach to those who can''t attend in person.', 'Every Tuesday', '7:30 PM', 'Media Room', 8, true)
 on conflict do nothing;
 
 -- Phase 1: Member Area Features
@@ -326,12 +329,7 @@ create policy "Admins can manage all memberships" on public.ministry_members for
 
 drop policy if exists "Leaders can read their ministry members" on public.ministry_members;
 create policy "Leaders can read their ministry members" on public.ministry_members for select using (
-  exists (
-    select 1 from public.ministry_members mm
-    where mm.ministry_id = ministry_members.ministry_id
-    and mm.user_id = auth.uid()
-    and mm.role = 'leader'
-  )
+  role = 'leader' and user_id = auth.uid()
 );
 
 -- Indexes for performance
