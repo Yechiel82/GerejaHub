@@ -188,9 +188,14 @@ on conflict (id) do nothing;
 
 insert into public.sermons (title, speaker, sermon_date, summary, media_url, published)
 values
-  ('Grace for the Road Ahead', 'Ps. Daniel Wijaya', '2026-05-24', null, null, true),
-  ('A House of Prayer', 'Ps. Maria Santoso', '2026-05-17', null, null, true),
-  ('Faith That Serves', 'Ps. Daniel Wijaya', '2026-05-10', null, null, true)
+  ('Grace for the Road Ahead', 'Ps. Daniel Wijaya', '2026-05-24', 'Exploring how God''s grace sustains us through life''s journey and prepares us for what lies ahead.', 'https://example.com/sermons/grace-road-ahead', true),
+  ('A House of Prayer', 'Ps. Maria Santoso', '2026-05-17', 'Understanding the importance of prayer in building a strong spiritual foundation for our church community.', 'https://example.com/sermons/house-of-prayer', true),
+  ('Faith That Serves', 'Ps. Daniel Wijaya', '2026-05-10', 'Discovering how authentic faith naturally leads to serving others and making a difference in our community.', 'https://example.com/sermons/faith-serves', true),
+  ('Walking in the Spirit', 'Ps. Maria Santoso', '2026-05-03', 'Learning to live daily guided by the Holy Spirit and experiencing His power in our lives.', 'https://example.com/sermons/walking-spirit', true),
+  ('The Power of Forgiveness', 'Ps. Daniel Wijaya', '2026-04-26', 'Understanding biblical forgiveness and how it brings freedom and healing to our hearts.', 'https://example.com/sermons/power-forgiveness', true),
+  ('Building on the Rock', 'Ps. Maria Santoso', '2026-04-19', 'Establishing our lives on the solid foundation of Christ and His teachings.', 'https://example.com/sermons/building-rock', true),
+  ('Love in Action', 'Ps. Daniel Wijaya', '2026-04-12', 'Practical ways to demonstrate God''s love through our daily actions and relationships.', 'https://example.com/sermons/love-action', true),
+  ('The Joy of Salvation', 'Ps. Maria Santoso', '2026-04-05', 'Rediscovering the joy and gratitude that comes from knowing we are saved by grace.', 'https://example.com/sermons/joy-salvation', true)
 on conflict do nothing;
 
 insert into public.events (title, event_date, time_label, location, description, published)
@@ -202,10 +207,139 @@ on conflict do nothing;
 
 insert into public.ministries (name, description, sort_order, published)
 values
-  ('Kids', null, 1, true),
-  ('Youth', null, 2, true),
-  ('Worship', null, 3, true),
-  ('Small Groups', null, 4, true),
-  ('Outreach', null, 5, true),
-  ('Prayer', null, 6, true)
+  ('Kids Ministry', 'Nurturing children''s faith through age-appropriate lessons, games, and activities. We create a safe and fun environment where kids can learn about Jesus and grow in their relationship with God.', 1, true),
+  ('Youth Ministry', 'Empowering teenagers to live out their faith boldly. We meet weekly for worship, Bible study, and fellowship, helping young people navigate life''s challenges with Christ at the center.', 2, true),
+  ('Worship Team', 'Leading the congregation in heartfelt worship through music and song. We practice weekly and serve during Sunday services, using our musical gifts to glorify God and inspire others.', 3, true),
+  ('Small Groups', 'Building authentic community through weekly gatherings in homes. These groups provide a space for deeper relationships, Bible study, prayer, and mutual support in our faith journey.', 4, true),
+  ('Outreach Ministry', 'Sharing God''s love beyond our church walls through community service, evangelism, and mission trips. We actively seek opportunities to serve our neighbors and spread the Gospel.', 5, true),
+  ('Prayer Ministry', 'Interceding for our church, community, and world. We meet regularly to pray together and are available to pray for specific needs and requests from our congregation.', 6, true),
+  ('Hospitality Team', 'Creating a welcoming atmosphere for visitors and members alike. We serve refreshments, greet guests, and ensure everyone feels at home in our church family.', 7, true),
+  ('Media Team', 'Supporting worship services through audio, video, and live streaming. We use technology to enhance the worship experience and extend our reach to those who can''t attend in person.', 8, true)
 on conflict do nothing;
+
+-- Phase 1: Member Area Features
+
+-- Event RSVPs
+create table if not exists public.event_rsvps (
+  id uuid primary key default gen_random_uuid(),
+  event_id uuid not null references public.events(id) on delete cascade,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  status text not null check (status in ('going', 'maybe', 'not_going')),
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now(),
+  unique(event_id, user_id)
+);
+
+-- Sermon Bookmarks
+create table if not exists public.sermon_bookmarks (
+  id uuid primary key default gen_random_uuid(),
+  sermon_id uuid not null references public.sermons(id) on delete cascade,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  created_at timestamptz not null default now(),
+  unique(sermon_id, user_id)
+);
+
+-- Sermon Notes
+create table if not exists public.sermon_notes (
+  id uuid primary key default gen_random_uuid(),
+  sermon_id uuid not null references public.sermons(id) on delete cascade,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  note text not null,
+  created_at timestamptz not null default now(),
+  updated_at timestamptz not null default now()
+);
+
+-- Ministry Members
+create table if not exists public.ministry_members (
+  id uuid primary key default gen_random_uuid(),
+  ministry_id uuid not null references public.ministries(id) on delete cascade,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  role text not null default 'member' check (role in ('member', 'leader')),
+  joined_at timestamptz not null default now(),
+  unique(ministry_id, user_id)
+);
+
+-- Triggers for updated_at
+drop trigger if exists event_rsvps_updated_at on public.event_rsvps;
+create trigger event_rsvps_updated_at before update on public.event_rsvps for each row execute function public.set_updated_at();
+
+drop trigger if exists sermon_notes_updated_at on public.sermon_notes;
+create trigger sermon_notes_updated_at before update on public.sermon_notes for each row execute function public.set_updated_at();
+
+-- Enable RLS
+alter table public.event_rsvps enable row level security;
+alter table public.sermon_bookmarks enable row level security;
+alter table public.sermon_notes enable row level security;
+alter table public.ministry_members enable row level security;
+
+-- RLS Policies for event_rsvps
+drop policy if exists "Users can read own RSVPs" on public.event_rsvps;
+create policy "Users can read own RSVPs" on public.event_rsvps for select using (auth.uid() = user_id);
+
+drop policy if exists "Users can create own RSVPs" on public.event_rsvps;
+create policy "Users can create own RSVPs" on public.event_rsvps for insert with check (auth.uid() = user_id);
+
+drop policy if exists "Users can update own RSVPs" on public.event_rsvps;
+create policy "Users can update own RSVPs" on public.event_rsvps for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+drop policy if exists "Users can delete own RSVPs" on public.event_rsvps;
+create policy "Users can delete own RSVPs" on public.event_rsvps for delete using (auth.uid() = user_id);
+
+drop policy if exists "Admins can manage all RSVPs" on public.event_rsvps;
+create policy "Admins can manage all RSVPs" on public.event_rsvps for all using (public.current_profile_role() = 'admin');
+
+-- RLS Policies for sermon_bookmarks
+drop policy if exists "Users can read own bookmarks" on public.sermon_bookmarks;
+create policy "Users can read own bookmarks" on public.sermon_bookmarks for select using (auth.uid() = user_id);
+
+drop policy if exists "Users can create own bookmarks" on public.sermon_bookmarks;
+create policy "Users can create own bookmarks" on public.sermon_bookmarks for insert with check (auth.uid() = user_id);
+
+drop policy if exists "Users can delete own bookmarks" on public.sermon_bookmarks;
+create policy "Users can delete own bookmarks" on public.sermon_bookmarks for delete using (auth.uid() = user_id);
+
+-- RLS Policies for sermon_notes
+drop policy if exists "Users can read own notes" on public.sermon_notes;
+create policy "Users can read own notes" on public.sermon_notes for select using (auth.uid() = user_id);
+
+drop policy if exists "Users can create own notes" on public.sermon_notes;
+create policy "Users can create own notes" on public.sermon_notes for insert with check (auth.uid() = user_id);
+
+drop policy if exists "Users can update own notes" on public.sermon_notes;
+create policy "Users can update own notes" on public.sermon_notes for update using (auth.uid() = user_id) with check (auth.uid() = user_id);
+
+drop policy if exists "Users can delete own notes" on public.sermon_notes;
+create policy "Users can delete own notes" on public.sermon_notes for delete using (auth.uid() = user_id);
+
+-- RLS Policies for ministry_members
+drop policy if exists "Users can read own memberships" on public.ministry_members;
+create policy "Users can read own memberships" on public.ministry_members for select using (auth.uid() = user_id);
+
+drop policy if exists "Users can create own memberships" on public.ministry_members;
+create policy "Users can create own memberships" on public.ministry_members for insert with check (auth.uid() = user_id and role = 'member');
+
+drop policy if exists "Users can delete own memberships" on public.ministry_members;
+create policy "Users can delete own memberships" on public.ministry_members for delete using (auth.uid() = user_id);
+
+drop policy if exists "Admins can manage all memberships" on public.ministry_members;
+create policy "Admins can manage all memberships" on public.ministry_members for all using (public.current_profile_role() = 'admin');
+
+drop policy if exists "Leaders can read their ministry members" on public.ministry_members;
+create policy "Leaders can read their ministry members" on public.ministry_members for select using (
+  exists (
+    select 1 from public.ministry_members mm
+    where mm.ministry_id = ministry_members.ministry_id
+    and mm.user_id = auth.uid()
+    and mm.role = 'leader'
+  )
+);
+
+-- Indexes for performance
+create index if not exists event_rsvps_user_id_idx on public.event_rsvps(user_id);
+create index if not exists event_rsvps_event_id_idx on public.event_rsvps(event_id);
+create index if not exists sermon_bookmarks_user_id_idx on public.sermon_bookmarks(user_id);
+create index if not exists sermon_bookmarks_sermon_id_idx on public.sermon_bookmarks(sermon_id);
+create index if not exists sermon_notes_user_id_idx on public.sermon_notes(user_id);
+create index if not exists sermon_notes_sermon_id_idx on public.sermon_notes(sermon_id);
+create index if not exists ministry_members_user_id_idx on public.ministry_members(user_id);
+create index if not exists ministry_members_ministry_id_idx on public.ministry_members(ministry_id);

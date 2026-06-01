@@ -1,11 +1,12 @@
-import { submitContactMessage } from "./actions/contact";
 import { formatDisplayDate, getPublicContent } from "@/lib/data/content";
+import { ContactForm } from "./components/contact-form";
+import { ErrorBoundary } from "./components/error-boundary";
+import { NAV_ITEMS, CONTENT_REVALIDATE_SECONDS } from "@/lib/utils/constants";
+import Image from "next/image";
 
 const heroPoster = "/media/hero-poster.jpg";
 
-export const revalidate = 60;
-
-const navItems = ["Visit", "Sermons", "Events", "Ministries", "Contact"];
+export const revalidate = CONTENT_REVALIDATE_SECONDS;
 
 export default async function Home() {
   const { settings, sermons, events, ministries } = await getPublicContent();
@@ -19,7 +20,7 @@ export default async function Home() {
         </a>
         <nav aria-label="Primary navigation">
           <div className="nav-links">
-            {navItems.map((item) => (
+            {NAV_ITEMS.map((item) => (
               <a key={item} href={`#${item.toLowerCase()}`}>
                 {item}
               </a>
@@ -103,7 +104,9 @@ export default async function Home() {
               <span>{formatDisplayDate(sermon.sermon_date)}</span>
               <h3>{sermon.title}</h3>
               <p>{sermon.speaker}</p>
-              <a href={sermon.media_url ?? "#contact"}>Listen now</a>
+              <a href={sermon.video_url || sermon.audio_url || "#contact"}>
+                {sermon.video_url ? 'Watch now' : 'Listen now'}
+              </a>
             </article>
           ))}
         </div>
@@ -166,23 +169,9 @@ export default async function Home() {
             intake.
           </p>
         </div>
-        <form action={submitContactMessage}>
-          <label>
-            Name
-            <input name="name" placeholder="Your name" required />
-          </label>
-          <label>
-            Email
-            <input name="email" type="email" placeholder="you@example.com" required />
-          </label>
-          <label>
-            Message
-            <textarea name="message" placeholder="How can we help?" rows={5} required />
-          </label>
-          <button className="button primary" type="submit">
-            Send Message
-          </button>
-        </form>
+        <ErrorBoundary>
+          <ContactForm />
+        </ErrorBoundary>
       </section>
     </main>
   );

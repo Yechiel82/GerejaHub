@@ -5,6 +5,9 @@ import type { Profile } from "@/lib/supabase/types";
 
 const memberNav = [
   ["Home", "/member"],
+  ["Events", "/member/events"],
+  ["Sermons", "/member/sermons"],
+  ["Ministries", "/member/ministries"],
   ["Prayer", "/member/prayer"],
   ["Profile", "/member/profile"]
 ];
