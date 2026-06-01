@@ -1103,3 +1103,54 @@ textarea:focus-visible {
     grid-template-columns: 1fr;
   }
 }
+
+/* Phase 2 Styles - Groups Grid */
+.groups-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.5rem;
+  margin-top: 2rem;
+}
+
+@media (max-width: 768px) {
+  .groups-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Phase 2 Styles - Notifications */
+.unread-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  background: var(--coral);
+  color: white;
+  border-radius: 12px;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--muted);
+}
+
+.empty-state p:first-child {
+  font-size: 4rem;
+  margin: 0;
+}
+
+.empty-state h3 {
+  margin: 1rem 0 0.5rem 0;
+  color: var(--ink);
+}
+
+.empty-state p:last-child {
+  margin: 0;
+}
