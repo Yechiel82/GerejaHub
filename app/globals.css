@@ -48,7 +48,7 @@ textarea {
   justify-content: space-between;
   gap: 24px;
   margin: 16px clamp(14px, 3vw, 36px) 0;
-  padding: 12px clamp(14px, 2vw, 22px);
+  padding: 16px clamp(14px, 2vw, 22px);
   border: 1px solid rgba(35, 31, 32, 0.12);
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.9);
@@ -72,6 +72,56 @@ textarea {
   border: 1px solid rgba(35, 31, 32, 0.24);
   border-radius: 8px;
   background: rgba(35, 31, 32, 0.05);
+}
+
+.brand-logo {
+  height: 60px;
+  width: auto;
+  object-fit: contain;
+}
+
+.login-logo {
+  max-width: 150px;
+  max-height: 150px;
+  width: auto;
+  height: auto;
+  object-fit: contain;
+}
+
+.login-card .login-logo {
+  margin: 0 auto 16px;
+}
+
+.login-logo-link {
+  display: block;
+  text-align: center;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.login-logo-link img {
+  display: inline-block;
+}
+
+.login-logo-link:hover {
+  opacity: 0.8;
+}
+.sidebar-logo {
+  height: 150px;
+  width: auto;
+  object-fit: contain;
+}
+
+
+.back-link {
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-decoration: none;
+  transition: color 0.2s;
+}
+
+.back-link:hover {
+  color: var(--ink);
 }
 
 nav,
@@ -514,10 +564,12 @@ textarea {
 }
 
 .admin-brand {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
   gap: 12px;
   font-weight: 850;
+  text-align: center;
 }
 
 .admin-nav {
@@ -1345,4 +1397,80 @@ textarea:focus-visible {
     align-items: flex-start;
     gap: 0.5rem;
   }
+}
+
+/* Prayer Wall Styles */
+.prayer-wall {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+.prayer-card {
+  padding: 1.25rem;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  transition: box-shadow 0.2s;
+}
+
+.prayer-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.prayer-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.75rem;
+}
+
+.prayer-date {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.prayer-request {
+  margin: 0.75rem 0;
+  line-height: 1.6;
+  color: var(--ink);
+}
+
+.prayer-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 0.75rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--line);
+}
+
+.empty-state {
+  text-align: center;
+  padding: 2rem;
+  color: var(--muted);
+}
+
+.status-badge {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+.status-new {
+  background: rgba(200, 157, 79, 0.1);
+  color: var(--gold);
+}
+
+.status-prayed {
+  background: rgba(47, 95, 79, 0.1);
+  color: var(--green);
+}
+
+.status-archived {
+  background: rgba(111, 102, 92, 0.1);
+  color: var(--muted);
 }

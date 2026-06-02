@@ -7,7 +7,8 @@ const adminNav = [
   ["Settings", "/admin/settings"],
   ["Sermons", "/admin/sermons"],
   ["Events", "/admin/events"],
-  ["Ministries", "/admin/ministries"]
+  ["Ministries", "/admin/ministries"],
+  ["Prayer", "/admin/prayer"]
 ];
 
 export function AdminShell({ children, email }: { children: ReactNode; email?: string | null }) {
@@ -15,7 +16,7 @@ export function AdminShell({ children, email }: { children: ReactNode; email?: s
     <main className="admin-page">
       <aside className="admin-sidebar">
         <Link className="admin-brand" href="/admin">
-          <span className="brand-mark">GH</span>
+          <img src="/media/logo.png" alt="GerejaHub" className="sidebar-logo" />
           <span>GerejaHub Admin</span>
         </Link>
         <nav className="admin-nav" aria-label="Admin navigation">

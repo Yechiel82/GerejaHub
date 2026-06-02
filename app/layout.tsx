@@ -33,8 +33,8 @@ export const metadata: Metadata = {
   publisher: APP_NAME,
   manifest: "/manifest.webmanifest",
   icons: {
-    icon: "/icon.svg",
-    apple: "/icon.svg"
+    icon: "/media/logo.png",
+    apple: "/media/logo.png"
   },
   openGraph: {
     type: "website",

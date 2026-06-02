@@ -17,7 +17,7 @@ export function MemberShell({ children, profile }: { children: ReactNode; profil
     <main className="admin-page member-page">
       <aside className="admin-sidebar">
         <Link className="admin-brand" href="/member">
-          <span className="brand-mark">GH</span>
+          <img src="/media/logo.png" alt="GerejaHub" className="sidebar-logo" />
           <span>GerejaHub Member</span>
         </Link>
         <nav className="admin-nav" aria-label="Member navigation">

@@ -15,8 +15,7 @@ export default async function Home() {
     <main>
       <header className="site-header">
         <a className="brand" href="#top" aria-label="GerejaHub home">
-          <span className="brand-mark">GH</span>
-          <span>GerejaHub</span>
+          <img src="/media/logo.png" alt="GerejaHub" className="brand-logo" />
         </a>
         <nav aria-label="Primary navigation">
           <div className="nav-links">
