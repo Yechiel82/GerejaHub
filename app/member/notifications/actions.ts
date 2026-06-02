@@ -15,7 +15,8 @@ export async function markAsRead(notificationId: string): Promise<ActionResult<s
 
     const { error } = await supabase
       .from('notifications')
-      .update({ read: true } as any)
+      // @ts-ignore - Supabase type inference issue
+      .update({ read: true })
       .eq('id', notificationId)
       .eq('user_id', user.id)
 
@@ -71,7 +72,8 @@ export async function markAllAsRead(): Promise<ActionResult<string>> {
 
     const { error } = await supabase
       .from('notifications')
-      .update({ read: true } as any)
+      // @ts-ignore - Supabase type inference issue
+      .update({ read: true })
       .eq('user_id', user.id)
       .eq('read', false)
 

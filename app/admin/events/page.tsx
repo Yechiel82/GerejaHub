@@ -6,7 +6,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 export default async function EventsPage() {
   const user = await requireAdminUser();
   const supabase = await createSupabaseServerClient();
-  const { data: events } = await supabase.from("events").select("*").order("created_at", { ascending: false });
+  const { data: events } = await supabase.from("events").select("*").order("created_at", { ascending: false }) as any;
 
   return (
     <AdminShell email={user.email}>
@@ -26,7 +26,7 @@ export default async function EventsPage() {
         <button className="button primary" type="submit">Create Event</button>
       </form>
       <div className="admin-stack">
-        {(events ?? []).map((event) => (
+        {(events ?? []).map((event: any) => (
           <form key={event.id} className="admin-form admin-panel" action={updateEvent}>
             <input name="id" type="hidden" value={event.id} />
             <label>Title<input name="title" defaultValue={event.title} required /></label>

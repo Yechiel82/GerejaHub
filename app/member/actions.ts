@@ -17,7 +17,7 @@ export async function submitPrayerRequest(formData: FormData) {
     name: value(formData, "name") || profile.full_name || profile.email,
     request: value(formData, "request"),
     visibility: value(formData, "visibility") === "church" ? "church" : "private"
-  });
+  } as any);
 
   if (error) {
     redirect("/member/prayer?error=" + encodeURIComponent(error.message));
@@ -33,6 +33,7 @@ export async function updateMemberProfile(formData: FormData) {
   const supabase = await createSupabaseServerClient();
   const { error } = await supabase
     .from("profiles")
+    // @ts-ignore - Supabase type inference issue
     .update({ full_name: value(formData, "full_name") })
     .eq("id", user.id);
 

@@ -56,6 +56,10 @@ export function SermonCard({ sermon, isBookmarked: initialBookmarked }: SermonCa
           {isBookmarked ? 'Bookmarked' : 'Bookmark'}
         </button>
         
+        <a href={`/member/sermons/${sermon.id}/notes`} className="icon-button">
+          📝 Notes
+        </a>
+        
         {(sermon.video_url || sermon.audio_url) && (
           <a
             href={sermon.video_url || sermon.audio_url || '#'}

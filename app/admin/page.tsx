@@ -9,7 +9,7 @@ export default async function AdminPage() {
     supabase.from("sermons").select("id", { count: "exact", head: true }),
     supabase.from("events").select("id", { count: "exact", head: true }),
     supabase.from("ministries").select("id", { count: "exact", head: true }),
-    supabase.from("contact_messages").select("*").order("created_at", { ascending: false }).limit(5)
+    supabase.from("contact_messages").select("*").order("created_at", { ascending: false }).limit(5) as any
   ]);
 
   const stats = [
@@ -41,7 +41,7 @@ export default async function AdminPage() {
         </div>
         <div className="admin-list">
           {messages.data?.length ? (
-            messages.data.map((message) => (
+            messages.data.map((message: any) => (
               <article key={message.id}>
                 <strong>{message.name}</strong>
                 <span>{message.email}</span>

@@ -17,7 +17,7 @@ export default async function MemberLoginPage({
   return (
     <main className="login-page">
       <form className="login-card" action={signInWithGoogleForMember}>
-        <span className="brand-mark">GH</span>
+        <img src="/media/logo.png" alt="GerejaHub" className="login-logo" />
         <div>
           <p className="section-kicker">Member</p>
           <h1>Sign in to GerejaHub</h1>

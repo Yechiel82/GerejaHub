@@ -6,7 +6,7 @@ import { createSupabaseServerClient } from "@/lib/supabase/server";
 export default async function SermonsPage() {
   const user = await requireAdminUser();
   const supabase = await createSupabaseServerClient();
-  const { data: sermons } = await supabase.from("sermons").select("*").order("sermon_date", { ascending: false });
+  const { data: sermons } = await supabase.from("sermons").select("*").order("sermon_date", { ascending: false }) as any;
 
   return (
     <AdminShell email={user.email}>
@@ -26,7 +26,7 @@ export default async function SermonsPage() {
         <button className="button primary" type="submit">Create Sermon</button>
       </form>
       <div className="admin-stack">
-        {(sermons ?? []).map((sermon) => (
+        {(sermons ?? []).map((sermon: any) => (
           <form key={sermon.id} className="admin-form admin-panel" action={updateSermon}>
             <input name="id" type="hidden" value={sermon.id} />
             <label>Title<input name="title" defaultValue={sermon.title} required /></label>

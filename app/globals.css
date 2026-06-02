@@ -1154,3 +1154,195 @@ textarea:focus-visible {
 .empty-state p:last-child {
   margin: 0;
 }
+
+/* Phase 2 Styles - Sermon Notes */
+.back-link {
+  display: inline-block;
+  margin-bottom: 1rem;
+  color: var(--green);
+  text-decoration: none;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.sermon-meta-info {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.notes-container {
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.notes-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.sermon-info-card {
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.sermon-info-card h3 {
+  margin: 0 0 1rem 0;
+  font-size: 1.125rem;
+}
+
+.sermon-info-card p {
+  margin: 0 0 1rem 0;
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.notes-tips {
+  padding: 1.5rem;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.notes-tips h4 {
+  margin: 0 0 1rem 0;
+  font-size: 1rem;
+}
+
+.notes-tips ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: var(--muted);
+  font-size: 0.875rem;
+  line-height: 1.8;
+}
+
+.notes-editor-container {
+  min-height: 500px;
+}
+
+@media (max-width: 968px) {
+  .notes-container {
+    grid-template-columns: 1fr;
+  }
+
+  .notes-sidebar {
+    order: 2;
+  }
+
+  .notes-editor-container {
+    order: 1;
+  }
+}
+
+/* Phase 2 Styles - Note Editor Component */
+.note-editor {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.editor-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.editor-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.editor-status {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.saved-indicator {
+  color: var(--green);
+}
+
+.note-textarea {
+  width: 100%;
+  min-height: 400px;
+  padding: 1rem;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.6;
+  resize: vertical;
+  background: var(--white);
+}
+
+.note-textarea:focus {
+  outline: none;
+  border-color: var(--green);
+}
+
+.note-textarea::placeholder {
+  color: var(--muted);
+}
+
+.error-message {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  background: #fee2e2;
+  color: #991b1b;
+  border-radius: 6px;
+  font-size: 0.875rem;
+}
+
+.editor-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+}
+
+.editor-hint {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.word-count {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--muted);
+  font-weight: 600;
+}
+
+@media (max-width: 768px) {
+  .note-editor {
+    padding: 1rem;
+  }
+
+  .editor-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+
+  .editor-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.5rem;
+  }
+}

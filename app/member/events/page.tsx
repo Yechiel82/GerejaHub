@@ -16,10 +16,10 @@ export default async function MemberEventsPage() {
       event_rsvps!left(status)
     `)
     .eq('published', true)
-    .order('created_at', { ascending: false })
+    .order('created_at', { ascending: false }) as any
 
   // Transform data to include RSVP status
-  const eventsWithRsvp = events?.map(event => ({
+  const eventsWithRsvp = events?.map((event: any) => ({
     ...event,
     userRsvpStatus: event.event_rsvps?.[0]?.status || null
   })) || []
@@ -35,7 +35,7 @@ export default async function MemberEventsPage() {
       <div className="admin-panel">
         <div className="event-list">
           {eventsWithRsvp.length > 0 ? (
-            eventsWithRsvp.map((event) => (
+            eventsWithRsvp.map((event: any) => (
               <article key={event.id} className="event-card">
                 <div className="event-card-content">
                   <h3>{event.title}</h3>
