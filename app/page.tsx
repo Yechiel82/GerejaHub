@@ -1,12 +1,12 @@
 import { formatDisplayDate, getPublicContent } from "@/lib/data/content";
 import { ContactForm } from "./components/contact-form";
 import { ErrorBoundary } from "./components/error-boundary";
-import { NAV_ITEMS, CONTENT_REVALIDATE_SECONDS } from "@/lib/utils/constants";
+import { NAV_ITEMS } from "@/lib/utils/constants";
 import Image from "next/image";
 
 const heroPoster = "/media/hero-poster.jpg";
 
-export const revalidate = CONTENT_REVALIDATE_SECONDS;
+export const revalidate = 60;
 
 export default async function Home() {
   const { settings, sermons, events, ministries } = await getPublicContent();
