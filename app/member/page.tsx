@@ -77,7 +77,7 @@ export default async function MemberPage() {
 
   const events = (upcomingEvents as any)?.map((rsvp: any) => rsvp.events) || [];
   const ministries = (userMinistries as any)?.map((m: any) => m.ministries) || [];
-  const notificationCount = unreadNotifications?.count || 0;
+  const notificationCount = (unreadNotifications as any)?.count || 0;
 
   return (
     <MemberShell profile={profile}>
@@ -211,26 +211,26 @@ export default async function MemberPage() {
           </div>
           <article className="sermon-featured">
             <div>
-              <h3>{latestSermon.title}</h3>
+              <h3>{(latestSermon as any).title}</h3>
               <p className="sermon-meta">
-                {latestSermon.speaker} • {formatDisplayDate(latestSermon.sermon_date)}
+                {(latestSermon as any).speaker} • {formatDisplayDate((latestSermon as any).sermon_date)}
               </p>
-              {latestSermon.scripture_reference && (
-                <p className="sermon-scripture">📖 {latestSermon.scripture_reference}</p>
+              {(latestSermon as any).scripture_reference && (
+                <p className="sermon-scripture">📖 {(latestSermon as any).scripture_reference}</p>
               )}
-              {latestSermon.description && (
-                <p>{latestSermon.description}</p>
+              {(latestSermon as any).description && (
+                <p>{(latestSermon as any).description}</p>
               )}
             </div>
             <div className="sermon-actions">
-              {(latestSermon.video_url || latestSermon.audio_url) && (
+              {((latestSermon as any).video_url || (latestSermon as any).audio_url) && (
                 <a
-                  href={latestSermon.video_url || latestSermon.audio_url || '#'}
+                  href={(latestSermon as any).video_url || (latestSermon as any).audio_url || '#'}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="button primary"
                 >
-                  ▶ {latestSermon.video_url ? 'Watch' : 'Listen'} Now
+                  ▶ {(latestSermon as any).video_url ? 'Watch' : 'Listen'} Now
                 </a>
               )}
               <Link href="/member/sermons" className="button secondary">
@@ -250,7 +250,7 @@ export default async function MemberPage() {
         </div>
         <div className="admin-list">
           {prayerRequests?.length ? (
-            prayerRequests.map((item) => (
+            prayerRequests.map((item: any) => (
               <article key={item.id}>
                 <strong>{item.title}</strong>
                 <span className={`status-badge status-${item.status}`}>
