@@ -35,7 +35,7 @@ export default async function PrayerPage({
       <section className="admin-panel">
         <div className="admin-panel-heading"><h2>Your Requests</h2></div>
         <div className="admin-list">
-          {prayerRequests?.length ? prayerRequests.map((item) => (
+          {prayerRequests?.length ? prayerRequests.map((item: any) => (
             <article key={item.id}>
               <strong>{item.name}</strong>
               <span>{item.visibility} · {item.status}</span>
