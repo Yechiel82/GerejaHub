@@ -2,6 +2,7 @@ import { MemberShell } from "../member-shell";
 import { requireMemberUser } from "@/lib/supabase/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { PrayerForm } from "./prayer-form";
+import { PrayerItem } from "./prayer-item";
 import { formatDisplayDate } from "@/lib/data/content";
 
 export default async function PrayerPage({
@@ -20,19 +21,19 @@ export default async function PrayerPage({
     .eq("user_id", user.id)
     .order("created_at", { ascending: false });
 
-  // Get community prayer requests (shared with church)
-  const { data: communityPrayers } = await supabase
+  // Get community prayer requests (shared with church) - using simple query for now
+  const { data: communityPrayers, error: communityError } = await supabase
     .from("prayer_requests")
-    .select(`
-      *,
-      profiles:user_id (
-        full_name,
-        email
-      )
-    `)
+    .select("*")
     .eq("visibility", "church")
     .order("created_at", { ascending: false })
     .limit(20);
+
+  // Debug logging
+  console.log('=== PRAYER WALL DEBUG ===');
+  console.log('Community Prayers:', communityPrayers);
+  console.log('Community Error:', communityError);
+  console.log('========================');
 
   return (
     <MemberShell profile={profile}>
@@ -48,6 +49,20 @@ export default async function PrayerPage({
           <h2>🙏 Prayer Wall</h2>
           <p>Pray for our church community</p>
         </div>
+        {/* DEBUG INFO - Remove after fixing */}
+        <div style={{ padding: '1rem', background: '#f0f0f0', borderRadius: '8px', marginBottom: '1rem', fontSize: '0.85rem' }}>
+          <strong>🔍 DEBUG INFO:</strong><br/>
+          User ID: {user.id}<br/>
+          Community Prayers Count: {communityPrayers?.length || 0}<br/>
+          Community Error: {communityError ? JSON.stringify(communityError) : 'null'}<br/>
+          {communityPrayers && communityPrayers.length > 0 && (
+            <>
+              <br/><strong>Data:</strong><br/>
+              <pre style={{ fontSize: '0.75rem', overflow: 'auto' }}>{JSON.stringify(communityPrayers, null, 2)}</pre>
+            </>
+          )}
+        </div>
+        
         <div className="prayer-wall">
           {communityPrayers && communityPrayers.length > 0 ? (
             communityPrayers.map((prayer: any) => (
@@ -87,14 +102,7 @@ export default async function PrayerPage({
         <div className="admin-list">
           {prayerRequests?.length ? (
             prayerRequests.map((item: any) => (
-              <article key={item.id}>
-                <strong>{item.name}</strong>
-                <span>{item.visibility === 'church' ? '🌍 Shared with church' : '🔒 Private to leaders'} · {item.status}</span>
-                <p>{item.request}</p>
-                <span className="item-meta">
-                  {formatDisplayDate(item.created_at)}
-                </span>
-              </article>
+              <PrayerItem key={item.id} prayer={item} />
             ))
           ) : (
             <p>No prayer requests yet. Click "+ New Request" above to submit one.</p>

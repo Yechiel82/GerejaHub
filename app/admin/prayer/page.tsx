@@ -1,23 +1,24 @@
 import { AdminShell } from "../admin-shell";
 import { requireAdminUser } from "@/lib/supabase/auth";
-import { createSupabaseServerClient } from "@/lib/supabase/server";
+import { createSupabaseAdminClient } from "@/lib/supabase/admin";
 import { formatDisplayDate } from "@/lib/data/content";
+import { DeleteButton } from "./delete-button";
 
 export default async function AdminPrayerPage() {
   const user = await requireAdminUser();
-  const supabase = await createSupabaseServerClient();
+  const supabase = createSupabaseAdminClient();
   
   // Get ALL prayer requests (both private and church-wide) for admin view
-  const { data: allPrayers } = await supabase
+  const { data: allPrayers, error: prayersError } = await supabase
     .from("prayer_requests")
-    .select(`
-      *,
-      profiles:user_id (
-        full_name,
-        email
-      )
-    `)
+    .select("*")
     .order("created_at", { ascending: false });
+
+  console.log('=== ADMIN PRAYER DEBUG ===');
+  console.log('All Prayers:', allPrayers);
+  console.log('Error:', prayersError);
+  console.log('Count:', allPrayers?.length || 0);
+  console.log('========================');
 
   // Separate private and church prayers
   const privatePrayers = allPrayers?.filter((p: any) => p.visibility === 'private') || [];
@@ -45,7 +46,7 @@ export default async function AdminPrayerPage() {
                   <div>
                     <strong>{prayer.name}</strong>
                     <span style={{ marginLeft: '12px', color: 'var(--muted)', fontSize: '0.9rem' }}>
-                      by {prayer.profiles?.full_name || prayer.profiles?.email}
+                      User ID: {prayer.user_id.substring(0, 8)}...
                     </span>
                   </div>
                   <span className={`status-badge status-${prayer.status}`}>
@@ -53,9 +54,15 @@ export default async function AdminPrayerPage() {
                   </span>
                 </div>
                 <p>{prayer.request}</p>
-                <span className="item-meta">
-                  🔒 Private · {formatDisplayDate(prayer.created_at)}
-                </span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px' }}>
+                  <span className="item-meta">
+                    🔒 Private · {formatDisplayDate(prayer.created_at)}
+                  </span>
+                  <DeleteButton
+                    prayerId={prayer.id}
+                    prayerName={prayer.name}
+                  />
+                </div>
               </article>
             ))
           ) : (
@@ -78,7 +85,7 @@ export default async function AdminPrayerPage() {
                   <div>
                     <strong>{prayer.name}</strong>
                     <span style={{ marginLeft: '12px', color: 'var(--muted)', fontSize: '0.9rem' }}>
-                      by {prayer.profiles?.full_name || prayer.profiles?.email}
+                      User ID: {prayer.user_id.substring(0, 8)}...
                     </span>
                   </div>
                   <span className={`status-badge status-${prayer.status}`}>
@@ -86,9 +93,15 @@ export default async function AdminPrayerPage() {
                   </span>
                 </div>
                 <p>{prayer.request}</p>
-                <span className="item-meta">
-                  🌍 Church-wide · {formatDisplayDate(prayer.created_at)}
-                </span>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px' }}>
+                  <span className="item-meta">
+                    🌍 Church-wide · {formatDisplayDate(prayer.created_at)}
+                  </span>
+                  <DeleteButton
+                    prayerId={prayer.id}
+                    prayerName={prayer.name}
+                  />
+                </div>
               </article>
             ))
           ) : (
