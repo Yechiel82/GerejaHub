@@ -3,6 +3,7 @@ import { requireMemberUser } from "@/lib/supabase/auth";
 import { createSupabaseServerClient } from "@/lib/supabase/server";
 import { PrayerForm } from "./prayer-form";
 import { PrayerItem } from "./prayer-item";
+import { PrayedButton } from "./prayed-button";
 import { formatDisplayDate } from "@/lib/data/content";
 
 export default async function PrayerPage({
@@ -14,26 +15,33 @@ export default async function PrayerPage({
   const { user, profile } = await requireMemberUser();
   const supabase = await createSupabaseServerClient();
   
-  // Get user's own prayer requests
+  // Get user's own prayer requests (exclude soft-deleted)
   const { data: prayerRequests } = await supabase
     .from("prayer_requests")
     .select("*")
     .eq("user_id", user.id)
+    .is("deleted_at", null)
     .order("created_at", { ascending: false });
 
-  // Get community prayer requests (shared with church) - using simple query for now
-  const { data: communityPrayers, error: communityError } = await supabase
+  // Get community prayer requests (exclude soft-deleted and hidden)
+  const { data: communityPrayers } = await supabase
     .from("prayer_requests")
     .select("*")
     .eq("visibility", "church")
+    .is("deleted_at", null)
+    .eq("is_hidden", false)
     .order("created_at", { ascending: false })
     .limit(20);
 
-  // Debug logging
-  console.log('=== PRAYER WALL DEBUG ===');
-  console.log('Community Prayers:', communityPrayers);
-  console.log('Community Error:', communityError);
-  console.log('========================');
+  // Get user's prayer interactions to show which prayers they've prayed for
+  const { data: userInteractions } = await supabase
+    .from("prayer_interactions")
+    .select("prayer_id")
+    .eq("user_id", user.id);
+
+  const prayedPrayerIds = new Set(
+    userInteractions?.map((i: any) => i.prayer_id) || []
+  );
 
   return (
     <MemberShell profile={profile}>
@@ -49,20 +57,6 @@ export default async function PrayerPage({
           <h2>🙏 Prayer Wall</h2>
           <p>Pray for our church community</p>
         </div>
-        {/* DEBUG INFO - Remove after fixing */}
-        <div style={{ padding: '1rem', background: '#f0f0f0', borderRadius: '8px', marginBottom: '1rem', fontSize: '0.85rem' }}>
-          <strong>🔍 DEBUG INFO:</strong><br/>
-          User ID: {user.id}<br/>
-          Community Prayers Count: {communityPrayers?.length || 0}<br/>
-          Community Error: {communityError ? JSON.stringify(communityError) : 'null'}<br/>
-          {communityPrayers && communityPrayers.length > 0 && (
-            <>
-              <br/><strong>Data:</strong><br/>
-              <pre style={{ fontSize: '0.75rem', overflow: 'auto' }}>{JSON.stringify(communityPrayers, null, 2)}</pre>
-            </>
-          )}
-        </div>
-        
         <div className="prayer-wall">
           {communityPrayers && communityPrayers.length > 0 ? (
             communityPrayers.map((prayer: any) => (
@@ -75,9 +69,20 @@ export default async function PrayerPage({
                 </div>
                 <p className="prayer-request">{prayer.request}</p>
                 <div className="prayer-footer">
-                  <span className={`status-badge status-${prayer.status}`}>
-                    {prayer.status}
-                  </span>
+                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                    <span className={`status-badge status-${prayer.status}`}>
+                      {prayer.status}
+                    </span>
+                    {prayer.prayer_count > 0 && (
+                      <span style={{ fontSize: '0.85rem', color: 'var(--muted)' }}>
+                        🙏 {prayer.prayer_count} {prayer.prayer_count === 1 ? 'person' : 'people'} prayed
+                      </span>
+                    )}
+                  </div>
+                  <PrayedButton
+                    prayerId={prayer.id}
+                    hasPrayed={prayedPrayerIds.has(prayer.id)}
+                  />
                 </div>
               </article>
             ))

@@ -97,10 +97,10 @@ export async function deletePrayerRequest(formData: FormData) {
     redirect("/member/prayer?error=" + encodeURIComponent("You can only delete your own prayers"));
   }
   
-  // Delete the prayer
+  // Soft delete - set deleted_at timestamp instead of removing from database
   const { error } = await supabase
     .from("prayer_requests")
-    .delete()
+    .update({ deleted_at: new Date().toISOString() } as any)
     .eq("id", prayerId);
   
   if (error) {
@@ -110,6 +110,48 @@ export async function deletePrayerRequest(formData: FormData) {
   revalidatePath("/member/prayer");
   revalidatePath("/admin/prayer");
   redirect("/member/prayer?deleted=1");
+}
+
+export async function togglePrayerInteraction(formData: FormData) {
+  const { user } = await requireMemberUser();
+  const supabase = await createSupabaseServerClient();
+  
+  const prayerId = value(formData, "prayer_id");
+  
+  // Check if user already prayed for this request
+  const { data: existing } = await supabase
+    .from("prayer_interactions")
+    .select("id")
+    .eq("prayer_id", prayerId)
+    .eq("user_id", user.id)
+    .single();
+  
+  if (existing) {
+    // User already prayed - remove the interaction (unpray)
+    const { error } = await supabase
+      .from("prayer_interactions")
+      .delete()
+      .eq("id", (existing as any).id);
+    
+    if (error) {
+      redirect("/member/prayer?error=" + encodeURIComponent(error.message));
+    }
+  } else {
+    // User hasn't prayed yet - add the interaction
+    const { error } = await supabase
+      .from("prayer_interactions")
+      .insert({
+        prayer_id: prayerId,
+        user_id: user.id
+      } as any);
+    
+    if (error) {
+      redirect("/member/prayer?error=" + encodeURIComponent(error.message));
+    }
+  }
+  
+  revalidatePath("/member/prayer");
+  redirect("/member/prayer");
 }
 
 export async function updateMemberProfile(formData: FormData) {
