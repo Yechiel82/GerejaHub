@@ -1,8 +1,8 @@
 import { formatDisplayDate, getPublicContent } from "@/lib/data/content";
 import { ContactForm } from "./components/contact-form";
 import { ErrorBoundary } from "./components/error-boundary";
+import { MobileNav } from "./components/mobile-nav";
 import { NAV_ITEMS } from "@/lib/utils/constants";
-import Image from "next/image";
 
 const heroPoster = "/media/hero-poster.jpg";
 
@@ -17,7 +17,9 @@ export default async function Home() {
         <a className="brand" href="#top" aria-label="GerejaHub home">
           <img src="/media/logo.png" alt="GerejaHub" className="brand-logo" />
         </a>
-        <nav aria-label="Primary navigation">
+        
+        {/* Desktop Navigation */}
+        <nav className="desktop-nav" aria-label="Primary navigation">
           <div className="nav-links">
             {NAV_ITEMS.map((item) => (
               <a key={item} href={`#${item.toLowerCase()}`}>
@@ -31,6 +33,9 @@ export default async function Home() {
             </a>
           </div>
         </nav>
+
+        {/* Mobile Navigation */}
+        <MobileNav />
       </header>
 
       <section id="top" className="hero">

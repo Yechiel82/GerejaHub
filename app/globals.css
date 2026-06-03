@@ -38,7 +38,7 @@ textarea {
 }
 
 .site-header {
-  position: fixed;
+  position: sticky;
   top: 0;
   left: 0;
   right: 0;
@@ -47,14 +47,14 @@ textarea {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  margin: 16px clamp(14px, 3vw, 36px) 0;
-  padding: 16px clamp(14px, 2vw, 22px);
-  border: 1px solid rgba(35, 31, 32, 0.12);
-  border-radius: 8px;
-  background: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  padding: 16px clamp(16px, 3vw, 36px);
+  border-bottom: 1px solid rgba(35, 31, 32, 0.12);
+  background: rgba(255, 255, 255, 0.95);
   color: var(--ink);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
   backdrop-filter: blur(14px);
+  flex-wrap: nowrap;
 }
 
 .brand {
@@ -62,6 +62,7 @@ textarea {
   align-items: center;
   gap: 10px;
   font-weight: 800;
+  flex-shrink: 0;
 }
 
 .brand-mark {
@@ -124,9 +125,8 @@ textarea {
   color: var(--ink);
 }
 
-nav,
-.nav-links,
-.nav-actions {
+/* Desktop Navigation */
+.desktop-nav {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -136,15 +136,23 @@ nav,
   font-weight: 650;
 }
 
+.nav-links,
+.nav-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 16px;
+}
+
 .nav-actions {
   gap: 8px;
 }
 
-nav a {
+.desktop-nav a {
   opacity: 0.9;
 }
 
-nav a:hover {
+.desktop-nav a:hover {
   opacity: 1;
 }
 
@@ -169,13 +177,114 @@ nav a:hover {
   border: 1px solid var(--line);
 }
 
+/* Mobile Navigation */
+.mobile-menu-button {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+  color: var(--ink);
+  z-index: 100;
+}
+
+.mobile-menu-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 98;
+}
+
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  right: -100%;
+  width: 280px;
+  height: 100vh;
+  background: var(--surface);
+  box-shadow: -4px 0 20px rgba(0, 0, 0, 0.1);
+  transition: right 0.3s ease;
+  z-index: 99;
+  overflow-y: auto;
+}
+
+.mobile-menu-open {
+  right: 0;
+}
+
+.mobile-menu-nav {
+  display: flex;
+  flex-direction: column;
+  padding: 80px 24px 24px;
+  gap: 8px;
+}
+
+.mobile-menu-nav a {
+  padding: 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  transition: background 0.2s;
+}
+
+.mobile-menu-nav a:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+.mobile-menu-login {
+  margin-top: 16px;
+  background: var(--green) !important;
+  color: var(--white) !important;
+  text-align: center;
+}
+
+.mobile-menu-login:hover {
+  background: var(--green-dark) !important;
+}
+
+/* Responsive Breakpoints */
+@media (max-width: 768px) {
+  .site-header {
+    padding: 12px 16px;
+    gap: 16px;
+  }
+
+  .brand {
+    flex: 0 0 auto;
+    height: 40px;
+  }
+
+  .brand-logo {
+    height: 40px;
+    max-height: 40px;
+  }
+
+  .desktop-nav {
+    display: none !important;
+  }
+
+  .mobile-menu-button {
+    display: flex !important;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+  }
+
+  .mobile-menu-overlay {
+    display: block;
+  }
+}
+
 .hero {
   position: relative;
   min-height: 100vh;
   display: flex;
   align-items: flex-end;
   overflow: hidden;
-  padding: 150px clamp(18px, 5vw, 72px) 72px;
+  padding: clamp(100px, 15vh, 150px) clamp(18px, 5vw, 72px) clamp(48px, 10vh, 72px);
   color: var(--white);
   background-image: url("/media/hero-poster.jpg");
   background-position: center;
@@ -298,7 +407,7 @@ p {
 }
 
 .section {
-  padding: 92px clamp(18px, 5vw, 72px);
+  padding: clamp(48px, 10vw, 92px) clamp(18px, 5vw, 72px);
 }
 
 .visit-section,
@@ -339,7 +448,7 @@ p {
 
 .sermon-grid {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
   gap: 18px;
 }
 
@@ -385,7 +494,7 @@ p {
 
 .ministry-grid {
   display: grid;
-  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
   gap: 12px;
   margin-top: 28px;
 }
@@ -437,25 +546,12 @@ textarea {
   resize: vertical;
 }
 
-@media (max-width: 900px) {
-  .site-header {
-    position: absolute;
-    align-items: flex-start;
-  }
-
-  nav {
-    max-width: 520px;
-  }
-
+@media (max-width: 1024px) {
   .visit-section,
   .split-section,
   .contact-section {
     grid-template-columns: 1fr;
-  }
-
-  .sermon-grid,
-  .ministry-grid {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: clamp(24px, 5vw, 48px);
   }
 
   .section-heading,
@@ -463,20 +559,15 @@ textarea {
     align-items: flex-start;
     flex-direction: column;
   }
+
+  .hero {
+    padding: clamp(80px, 12vh, 120px) clamp(18px, 5vw, 48px) clamp(40px, 8vh, 60px);
+  }
 }
 
-@media (max-width: 620px) {
+@media (max-width: 640px) {
   .site-header {
-    flex-direction: column;
-    margin: 12px;
-  }
-
-  nav,
-  .nav-links,
-  .nav-actions {
-    justify-content: flex-start;
-    gap: 10px;
-    font-size: 0.86rem;
+    padding: 12px 16px;
   }
 
   .hero {
@@ -489,9 +580,23 @@ textarea {
     background: linear-gradient(180deg, rgba(18, 19, 18, 0.5), rgba(18, 19, 18, 0.86));
   }
 
+  .hero-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero-actions .button {
+    width: 100%;
+  }
+
   .section {
     padding-top: 68px;
     padding-bottom: 68px;
+  }
+
+  .card {
+    padding: 18px;
+    min-height: 180px;
   }
 
   .sermon-grid,
