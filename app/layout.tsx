@@ -35,9 +35,9 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/logo_svg.svg", type: "image/svg+xml" },
-      { url: "/media/logo.png", sizes: "512x512", type: "image/png" }
+      { url: "/media/logo_putih.png", sizes: "512x512", type: "image/png" }
     ],
-    apple: "/media/logo.png"
+    apple: "/media/logo_putih.png"
   },
   openGraph: {
     type: "website",
@@ -78,7 +78,8 @@ export const viewport: Viewport = {
   themeColor: "#f7f1e8",
   width: "device-width",
   initialScale: 1,
-  maximumScale: 5
+  maximumScale: 5,
+  viewportFit: "cover"
 };
 
 export default function RootLayout({
