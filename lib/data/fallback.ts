@@ -8,7 +8,8 @@ export const fallbackSettings: ChurchSettings = {
     "Mari menuai bersama dalam kasih, pelayanan, dan pertumbuhan iman. Temukan jadwal ibadah, renungan, komunitas, dan pelayanan gereja dalam satu tempat.",
   service_time: "Sunday, 9:00 AM",
   address: "123 Faith Avenue, Jakarta",
-  email: "hello@gerejahub.org",
+  email: "contact@example.com",
+  phone: "+62 123 4567 890",
   giving_note:
     "Add a secure giving provider when the church is ready. Phase 1 includes the public placement, so the payment integration can be connected later without redesigning the site.",
   created_at: "",

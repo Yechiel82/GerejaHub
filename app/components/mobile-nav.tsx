@@ -1,7 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { NAV_ITEMS } from "@/lib/utils/constants";
+import Link from "next/link";
+
+const NAV_LINKS = [
+  { label: "Home", href: "/" },
+  { label: "Visit", href: "/visit" },
+  { label: "Sermons", href: "/sermons" },
+  { label: "Events", href: "/events" },
+  { label: "Ministries", href: "/ministries" },
+  { label: "Contact", href: "/contact" },
+];
 
 export function MobileNav() {
   const [isOpen, setIsOpen] = useState(false);
@@ -52,26 +61,24 @@ export function MobileNav() {
       {/* Mobile Menu */}
       <div className={`mobile-menu ${isOpen ? 'mobile-menu-open' : ''}`}>
         <nav className="mobile-menu-nav">
-          {NAV_ITEMS.map((item) => (
-            <a
-              key={item}
-              href={`#${item.toLowerCase()}`}
+          {NAV_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
               onClick={closeMenu}
             >
-              {item}
-            </a>
+              {link.label}
+            </Link>
           ))}
-          <a
+          <Link
             href="/member/login"
             className="mobile-menu-login"
             onClick={closeMenu}
           >
             Member Login
-          </a>
+          </Link>
         </nav>
       </div>
     </>
   );
 }
-
-// Made with Bob

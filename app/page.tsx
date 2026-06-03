@@ -1,36 +1,37 @@
-import { formatDisplayDate, getPublicContent } from "@/lib/data/content";
-import { ContactForm } from "./components/contact-form";
-import { ErrorBoundary } from "./components/error-boundary";
+import { getPublicContent } from "@/lib/data/content";
 import { MobileNav } from "./components/mobile-nav";
-import { NAV_ITEMS } from "@/lib/utils/constants";
+import { PwaInstall } from "./components/pwa-install";
+import { Footer } from "./components/footer";
+import Link from "next/link";
 
 const heroPoster = "/media/hero-poster.jpg";
 
 export const revalidate = 60;
 
 export default async function Home() {
-  const { settings, sermons, events, ministries } = await getPublicContent();
+  const { settings } = await getPublicContent();
 
   return (
     <main>
       <header className="site-header">
-        <a className="brand" href="#top" aria-label="GerejaHub home">
+        <Link className="brand" href="/" aria-label="GerejaHub home">
           <img src="/media/logo.png" alt="GerejaHub" className="brand-logo" />
-        </a>
+        </Link>
         
         {/* Desktop Navigation */}
         <nav className="desktop-nav" aria-label="Primary navigation">
           <div className="nav-links">
-            {NAV_ITEMS.map((item) => (
-              <a key={item} href={`#${item.toLowerCase()}`}>
-                {item}
-              </a>
-            ))}
+            <Link href="/">Home</Link>
+            <Link href="/visit">Visit</Link>
+            <Link href="/sermons">Sermons</Link>
+            <Link href="/events">Events</Link>
+            <Link href="/ministries">Ministries</Link>
+            <Link href="/contact">Contact</Link>
           </div>
           <div className="nav-actions">
-            <a className="nav-login" href="/member/login">
+            <Link className="nav-login" href="/member/login">
               Member Login
-            </a>
+            </Link>
           </div>
         </nav>
 
@@ -38,7 +39,7 @@ export default async function Home() {
         <MobileNav />
       </header>
 
-      <section id="top" className="hero">
+      <section className="hero">
         <video
           className="hero-video"
           autoPlay
@@ -57,126 +58,126 @@ export default async function Home() {
           <h1>{settings.hero_title}</h1>
           <p className="hero-copy">{settings.hero_description}</p>
           <div className="hero-actions">
-            <a className="button primary" href="#visit">
-              Rencanakan Kunjungan
-            </a>
-            <a className="button secondary" href="#sermons">
-              Lihat Renungan
-            </a>
+            <Link className="button primary" href="/visit">
+              Plan Your Visit
+            </Link>
+            <Link className="button secondary" href="/sermons">
+              Watch Sermons
+            </Link>
           </div>
         </div>
       </section>
 
-      <section id="visit" className="section visit-section">
-        <div>
-          <p className="section-kicker">For new visitors</p>
-          <h2>Join us this Sunday</h2>
-          <p>
-            Make the first visit simple with worship times, address, parking notes, children&apos;s
-            ministry information, and a clear sense of what to expect.
-          </p>
-        </div>
-        <div className="visit-panel">
-          <div>
-            <span>Service Time</span>
-            <strong>{settings.service_time}</strong>
+      {/* Summary Cards Section */}
+      <section className="section summary-section">
+        <div className="content-wrapper">
+          <div className="summary-intro">
+            <h2>Welcome to Our Church</h2>
+            <p>Discover what makes our community special and find your place to connect, grow, and serve.</p>
           </div>
-          <div>
-            <span>Location</span>
-            <strong>{settings.address}</strong>
-          </div>
-          <div>
-            <span>Contact</span>
-            <strong>{settings.email}</strong>
-          </div>
-        </div>
-      </section>
 
-      <section id="sermons" className="section">
-        <div className="section-heading">
-          <div>
-            <p className="section-kicker">Latest messages</p>
-            <h2>Sermons</h2>
-          </div>
-          <a className="text-link" href="#contact">
-            Request archive access
-          </a>
-        </div>
-        <div className="sermon-grid">
-          {sermons.map((sermon) => (
-            <article className="card" key={sermon.id}>
-              <span>{formatDisplayDate(sermon.sermon_date)}</span>
-              <h3>{sermon.title}</h3>
-              <p>{sermon.speaker}</p>
-              <a href={sermon.video_url || sermon.audio_url || "#contact"}>
-                {sermon.video_url ? 'Watch now' : 'Listen now'}
-              </a>
+          <div className="summary-grid">
+            <article className="summary-card">
+              <div className="summary-icon">📍</div>
+              <h3>Visit Us</h3>
+              <p>
+                Plan your first visit with service times, location details, and what to expect. 
+                We can't wait to welcome you!
+              </p>
+              <Link href="/visit" className="button secondary">
+                Learn More →
+              </Link>
             </article>
-          ))}
-        </div>
-      </section>
 
-      <section id="events" className="section split-section">
-        <div>
-          <p className="section-kicker">Community rhythm</p>
-          <h2>Events</h2>
-          <p>
-            Keep worship services, small groups, youth gatherings, classes, and special events easy to
-            discover from any device.
-          </p>
-        </div>
-        <div className="event-list">
-          {events.map((event) => (
-            <article key={event.id}>
-              <h3>{event.title}</h3>
-              <p>{event.time_label}</p>
-              <span>{event.location}</span>
+            <article className="summary-card">
+              <div className="summary-icon">🎥</div>
+              <h3>Sermons</h3>
+              <p>
+                Watch or listen to inspiring messages from our sermon archive. 
+                Grow in faith through biblical teaching.
+              </p>
+              <Link href="/sermons" className="button secondary">
+                Browse Sermons →
+              </Link>
             </article>
-          ))}
-        </div>
-      </section>
 
-      <section id="ministries" className="section ministries-section">
-        <div className="section-heading">
-          <div>
-            <p className="section-kicker">Get connected</p>
-            <h2>Ministries</h2>
+            <article className="summary-card">
+              <div className="summary-icon">📅</div>
+              <h3>Events</h3>
+              <p>
+                Stay connected with upcoming church events, small groups, and special gatherings. 
+                There's always something happening!
+              </p>
+              <Link href="/events" className="button secondary">
+                View Events →
+              </Link>
+            </article>
+
+            <article className="summary-card">
+              <div className="summary-icon">🤝</div>
+              <h3>Ministries</h3>
+              <p>
+                Discover meaningful ways to serve and connect. Find your place in our church community 
+                through various ministry opportunities.
+              </p>
+              <Link href="/ministries" className="button secondary">
+                Explore Ministries →
+              </Link>
+            </article>
+
+            <article className="summary-card">
+              <div className="summary-icon">💬</div>
+              <h3>Contact</h3>
+              <p>
+                Have questions or need prayer? We're here for you. Reach out and let us know 
+                how we can help.
+              </p>
+              <Link href="/contact" className="button secondary">
+                Get In Touch →
+              </Link>
+            </article>
+
+            <article className="summary-card highlight">
+              <div className="summary-icon">👥</div>
+              <h3>Member Area</h3>
+              <p>
+                Already a member? Access exclusive features like prayer requests, sermon notes, 
+                event RSVPs, and more.
+              </p>
+              <Link href="/member/login" className="button primary">
+                Member Login →
+              </Link>
+            </article>
           </div>
-          <p>Simple paths for people to find their place in the church community.</p>
-        </div>
-        <div className="ministry-grid">
-          {ministries.map((ministry) => (
-            <a key={ministry.id} href="#contact">
-              {ministry.name}
-            </a>
-          ))}
         </div>
       </section>
 
-      <section className="section giving-section">
-        <div>
-          <p className="section-kicker">Generosity</p>
-          <h2>Giving</h2>
-          <p>{settings.giving_note}</p>
+      {/* Quick Info Section */}
+      <section className="section quick-info-section">
+        <div className="content-wrapper">
+          <div className="quick-info-grid">
+            <div className="quick-info-item">
+              <h3>Service Times</h3>
+              <p>{settings.service_time}</p>
+            </div>
+            <div className="quick-info-item">
+              <h3>Location</h3>
+              <p>{settings.address}</p>
+            </div>
+            <div className="quick-info-item">
+              <h3>Contact</h3>
+              <p>{settings.email}</p>
+              <p>{settings.phone}</p>
+            </div>
+          </div>
         </div>
-        <a className="button primary" href="#contact">
-          Giving Setup
-        </a>
       </section>
 
-      <section id="contact" className="section contact-section">
-        <div>
-          <p className="section-kicker">Contact</p>
-          <h2>We would love to hear from you</h2>
-          <p>
-            Use this section for general questions, visit planning, pastoral care, or prayer request
-            intake.
-          </p>
-        </div>
-        <ErrorBoundary>
-          <ContactForm />
-        </ErrorBoundary>
-      </section>
+      {/* PWA Installation Section */}
+      <PwaInstall />
+
+      {/* Footer */}
+      <Footer email={settings.email} phone={settings.phone} address={settings.address} />
     </main>
   );
 }
