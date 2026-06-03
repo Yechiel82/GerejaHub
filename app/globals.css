@@ -38,7 +38,7 @@ textarea {
 }
 
 .site-header {
-  position: sticky;
+  position: fixed;
   top: 0;
   left: 0;
   right: 0;
@@ -47,12 +47,13 @@ textarea {
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  margin: 0;
-  padding: 16px clamp(16px, 3vw, 36px);
-  border-bottom: 1px solid rgba(35, 31, 32, 0.12);
+  margin: 16px clamp(14px, 3vw, 36px);
+  padding: 16px clamp(14px, 2vw, 22px);
+  border: 1px solid rgba(35, 31, 32, 0.12);
+  border-radius: 8px;
   background: rgba(255, 255, 255, 0.95);
   color: var(--ink);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
   backdrop-filter: blur(14px);
   flex-wrap: nowrap;
 }
@@ -246,18 +247,21 @@ textarea {
 /* Responsive Breakpoints */
 @media (max-width: 768px) {
   .site-header {
-    padding: 12px 16px;
+    margin: 12px clamp(12px, 4vw, 20px) 0;
+    padding: 6px 16px;
     gap: 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(35, 31, 32, 0.12);
   }
 
   .brand {
     flex: 0 0 auto;
-    height: 40px;
+    height: 52px;
   }
 
   .brand-logo {
-    height: 40px;
-    max-height: 40px;
+    height: 52px;
+    max-height: 52px;
   }
 
   .desktop-nav {
@@ -567,7 +571,7 @@ textarea {
 
 @media (max-width: 640px) {
   .site-header {
-    padding: 12px 16px;
+    padding: 6px 16px;
   }
 
   .hero {

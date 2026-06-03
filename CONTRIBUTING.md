@@ -292,7 +292,6 @@ Currently, GerejaHub is in English. If you'd like to add translations:
 
 - **GitHub Discussions** - Ask questions
 - **GitHub Issues** - Report bugs
-- **Email** - support@gerejahub.org
 
 ## 🏆 Recognition
 
