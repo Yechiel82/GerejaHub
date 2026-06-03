@@ -320,9 +320,6 @@ We pledge to make participation in our project a harassment-free experience for 
 - Publishing others' private information
 - Other conduct which could reasonably be considered inappropriate
 
-### Enforcement
-
-Instances of abusive behavior may be reported to support@gerejahub.org. All complaints will be reviewed and investigated.
 
 ## 📄 License
 
