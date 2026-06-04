@@ -22,24 +22,28 @@ export function PrayedButton({ prayerId, hasPrayed }: PrayedButtonProps) {
       <button
         type="submit"
         className={hasPrayed ? "button secondary" : "button primary"}
-        style={{ 
-          minHeight: '32px', 
-          padding: '6px 16px', 
-          fontSize: '0.85rem',
+        style={{
+          minHeight: '36px',
+          padding: '8px 18px',
+          fontSize: '0.875rem',
           display: 'flex',
           alignItems: 'center',
-          gap: '6px'
+          gap: '6px',
+          fontWeight: '700',
+          borderRadius: '8px',
+          transition: 'all 0.2s ease',
+          whiteSpace: 'nowrap'
         }}
       >
         {hasPrayed ? (
           <>
-            <span>✓</span>
+            <span style={{ fontSize: '1rem' }}>✓</span>
             <span>Prayed</span>
           </>
         ) : (
           <>
-            <span>🙏</span>
-            <span>I've Prayed</span>
+            <span style={{ fontSize: '1rem' }}>🙏</span>
+            <span>I'll Pray</span>
           </>
         )}
       </button>

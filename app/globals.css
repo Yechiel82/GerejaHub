@@ -1580,72 +1580,205 @@ textarea:focus-visible {
 /* Prayer Wall Styles */
 .prayer-wall {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
 }
 
 .prayer-card {
-  padding: 1.25rem;
+  position: relative;
+  padding: 1.75rem;
   border: 1px solid var(--line);
-  border-radius: 8px;
+  border-radius: 12px;
   background: var(--surface);
-  transition: box-shadow 0.2s;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 
 .prayer-card:hover {
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+  border-color: rgba(47, 95, 79, 0.3);
+}
+
+.prayer-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, var(--green), var(--gold));
+  border-radius: 12px 0 0 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.prayer-card:hover::before {
+  opacity: 1;
 }
 
 .prayer-header {
   display: flex;
   justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.prayer-author {
+  display: flex;
   align-items: center;
-  margin-bottom: 0.75rem;
+  gap: 0.75rem;
+  flex: 1;
+}
+
+.prayer-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--green), var(--gold));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--white);
+  font-weight: 700;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+
+.prayer-author-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.prayer-author-name {
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--ink);
+  line-height: 1.2;
 }
 
 .prayer-date {
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   color: var(--muted);
+  font-weight: 500;
 }
 
 .prayer-request {
-  margin: 0.75rem 0;
-  line-height: 1.6;
+  margin: 1rem 0;
+  line-height: 1.7;
   color: var(--ink);
+  font-size: 0.95rem;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .prayer-footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-top: 0.75rem;
-  padding-top: 0.75rem;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
   border-top: 1px solid var(--line);
+  gap: 1rem;
+  flex-wrap: wrap;
 }
 
-.empty-state {
-  text-align: center;
-  padding: 2rem;
+.prayer-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.prayer-count {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
   color: var(--muted);
-}
-
-.status-badge {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
-  font-size: 0.85rem;
   font-weight: 600;
 }
 
+.prayer-count-icon {
+  font-size: 1.1rem;
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--muted);
+  background: var(--surface);
+  border: 2px dashed var(--line);
+  border-radius: 12px;
+}
+
+.empty-state-icon {
+  font-size: 3rem;
+  margin-bottom: 1rem;
+  opacity: 0.5;
+}
+
+.empty-state-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.empty-state-subtext {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.85rem;
+  border-radius: 16px;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
 .status-new {
-  background: rgba(200, 157, 79, 0.1);
+  background: rgba(200, 157, 79, 0.15);
   color: var(--gold);
+  border: 1px solid rgba(200, 157, 79, 0.3);
 }
 
 .status-prayed {
-  background: rgba(47, 95, 79, 0.1);
+  background: rgba(47, 95, 79, 0.15);
   color: var(--green);
+  border: 1px solid rgba(47, 95, 79, 0.3);
+}
+
+.status-answered {
+  background: rgba(47, 95, 79, 0.2);
+  color: var(--green-dark);
+  border: 1px solid rgba(47, 95, 79, 0.4);
+}
+
+@media (max-width: 768px) {
+  .prayer-wall {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+  
+  .prayer-card {
+    padding: 1.5rem;
+  }
+  
+  .prayer-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
 }
 
 .status-archived {

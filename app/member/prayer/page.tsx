@@ -60,35 +60,60 @@ export default async function PrayerPage({
         </div>
         <div className="prayer-wall">
           {communityPrayers && communityPrayers.length > 0 ? (
-            communityPrayers.map((prayer: any) => (
-              <article key={prayer.id} className="prayer-card">
-                <div className="prayer-header">
-                  <strong>{prayer.is_anonymous ? 'Anonymous' : prayer.name}</strong>
-                  <span className="prayer-date">
-                    {formatDisplayDate(prayer.created_at)}
-                  </span>
-                </div>
-                <p className="prayer-request">{prayer.request}</p>
-                <div className="prayer-footer">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                    <span className={`status-badge status-${prayer.status}`}>
-                      {prayer.status}
-                    </span>
-                    {prayer.prayer_count > 0 && (
-                      <span style={{ fontSize: '0.85rem', color: 'var(--muted)' }}>
-                        🙏 {prayer.prayer_count} {prayer.prayer_count === 1 ? 'person' : 'people'} prayed
-                      </span>
-                    )}
+            communityPrayers.map((prayer: any) => {
+              const authorName = prayer.is_anonymous ? 'Anonymous' : prayer.name;
+              const initials = authorName
+                .split(' ')
+                .map((n: string) => n[0])
+                .join('')
+                .toUpperCase()
+                .slice(0, 2);
+              
+              return (
+                <article key={prayer.id} className="prayer-card">
+                  <div className="prayer-header">
+                    <div className="prayer-author">
+                      <div className="prayer-avatar">
+                        {initials}
+                      </div>
+                      <div className="prayer-author-info">
+                        <div className="prayer-author-name">{authorName}</div>
+                        <span className="prayer-date">
+                          {formatDisplayDate(prayer.created_at)}
+                        </span>
+                      </div>
+                    </div>
                   </div>
-                  <PrayedButton
-                    prayerId={prayer.id}
-                    hasPrayed={prayedPrayerIds.has(prayer.id)}
-                  />
-                </div>
-              </article>
-            ))
+                  <p className="prayer-request">{prayer.request}</p>
+                  <div className="prayer-footer">
+                    <div className="prayer-meta">
+                      <span className={`status-badge status-${prayer.status}`}>
+                        {prayer.status === 'new' && '✨ '}
+                        {prayer.status === 'prayed' && '🙏 '}
+                        {prayer.status === 'answered' && '✓ '}
+                        {prayer.status}
+                      </span>
+                      {prayer.prayer_count > 0 && (
+                        <span className="prayer-count">
+                          <span className="prayer-count-icon">🙏</span>
+                          <span>{prayer.prayer_count} {prayer.prayer_count === 1 ? 'prayer' : 'prayers'}</span>
+                        </span>
+                      )}
+                    </div>
+                    <PrayedButton
+                      prayerId={prayer.id}
+                      hasPrayed={prayedPrayerIds.has(prayer.id)}
+                    />
+                  </div>
+                </article>
+              );
+            })
           ) : (
-            <p className="empty-state">No community prayer requests yet. Be the first to share!</p>
+            <div className="empty-state">
+              <div className="empty-state-icon">🙏</div>
+              <div className="empty-state-text">No community prayer requests yet</div>
+              <div className="empty-state-subtext">Be the first to share a prayer with the community!</div>
+            </div>
           )}
         </div>
       </section>
