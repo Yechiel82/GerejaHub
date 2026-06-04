@@ -23,11 +23,12 @@ export default async function PrayerPage({
     .is("deleted_at", null)
     .order("created_at", { ascending: false });
 
-  // Get community prayer requests (exclude soft-deleted and hidden)
+  // Get community prayer requests from OTHER members (exclude current user, soft-deleted, and hidden)
   const { data: communityPrayers } = await supabase
     .from("prayer_requests")
     .select("*")
     .eq("visibility", "church")
+    .neq("user_id", user.id)
     .is("deleted_at", null)
     .eq("is_hidden", false)
     .order("created_at", { ascending: false })
@@ -62,7 +63,7 @@ export default async function PrayerPage({
             communityPrayers.map((prayer: any) => (
               <article key={prayer.id} className="prayer-card">
                 <div className="prayer-header">
-                  <strong>{prayer.name}</strong>
+                  <strong>{prayer.is_anonymous ? 'Anonymous' : prayer.name}</strong>
                   <span className="prayer-date">
                     {formatDisplayDate(prayer.created_at)}
                   </span>

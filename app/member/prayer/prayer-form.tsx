@@ -29,19 +29,23 @@ export function PrayerForm({ defaultName, saved, error }: PrayerFormProps) {
         <>
           {saved ? <p className="form-success">Prayer request submitted.</p> : null}
           {error ? <p className="form-error">{error}</p> : null}
-          <form className="admin-form" action={submitPrayerRequest}>
-            <label>
+          <form className="admin-form prayer-form" action={submitPrayerRequest}>
+            <label className="form-field">
               Name
               <input name="name" defaultValue={defaultName} />
             </label>
-            <label>
+            <label className="form-field">
               Visibility
-              <select name="visibility" defaultValue="private">
+              <select className="themed-select" name="visibility" defaultValue="private">
                 <option value="private">Private to leaders</option>
                 <option value="church">Share with church</option>
               </select>
             </label>
-            <label>
+            <label className="check-row">
+              <input type="checkbox" name="is_anonymous" />
+              <span>Post anonymously (your name will show as "Anonymous")</span>
+            </label>
+            <label className="form-field">
               Request
               <textarea name="request" rows={5} required />
             </label>

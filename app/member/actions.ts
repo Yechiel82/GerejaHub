@@ -12,11 +12,14 @@ function value(formData: FormData, key: string) {
 export async function submitPrayerRequest(formData: FormData) {
   const { user, profile } = await requireMemberUser();
   const supabase = await createSupabaseServerClient();
+  const isAnonymous = formData.get("is_anonymous") === "on";
+  
   const { error } = await supabase.from("prayer_requests").insert({
     user_id: user.id,
     name: value(formData, "name") || profile.full_name || profile.email,
     request: value(formData, "request"),
-    visibility: value(formData, "visibility") === "church" ? "church" : "private"
+    visibility: value(formData, "visibility") === "church" ? "church" : "private",
+    is_anonymous: isAnonymous
   } as any);
 
   if (error) {

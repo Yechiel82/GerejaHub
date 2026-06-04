@@ -50,10 +50,17 @@ export default async function AdminPrayerPage() {
               <article key={prayer.id}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '8px' }}>
                   <div>
-                    <strong>{prayer.name}</strong>
-                    <span style={{ marginLeft: '12px', color: 'var(--muted)', fontSize: '0.9rem' }}>
-                      User ID: {prayer.user_id.substring(0, 8)}...
-                    </span>
+                    <strong>{prayer.is_anonymous ? 'Anonymous' : prayer.name}</strong>
+                    {prayer.is_anonymous && (
+                      <span style={{ marginLeft: '8px', padding: '2px 8px', background: '#9e9e9e', color: '#fff', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold' }}>
+                        ANONYMOUS
+                      </span>
+                    )}
+                    {!prayer.is_anonymous && (
+                      <span style={{ marginLeft: '12px', color: 'var(--muted)', fontSize: '0.9rem' }}>
+                        User ID: {prayer.user_id.substring(0, 8)}...
+                      </span>
+                    )}
                   </div>
                   <span className={`status-badge status-${prayer.status}`}>
                     {prayer.status}
@@ -96,10 +103,17 @@ export default async function AdminPrayerPage() {
               <article key={prayer.id}>
                 <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '8px' }}>
                   <div>
-                    <strong>{prayer.name}</strong>
-                    <span style={{ marginLeft: '12px', color: 'var(--muted)', fontSize: '0.9rem' }}>
-                      User ID: {prayer.user_id.substring(0, 8)}...
-                    </span>
+                    <strong>{prayer.is_anonymous ? 'Anonymous' : prayer.name}</strong>
+                    {prayer.is_anonymous && (
+                      <span style={{ marginLeft: '8px', padding: '2px 8px', background: '#9e9e9e', color: '#fff', borderRadius: '4px', fontSize: '0.75rem', fontWeight: 'bold' }}>
+                        ANONYMOUS
+                      </span>
+                    )}
+                    {!prayer.is_anonymous && (
+                      <span style={{ marginLeft: '12px', color: 'var(--muted)', fontSize: '0.9rem' }}>
+                        User ID: {prayer.user_id.substring(0, 8)}...
+                      </span>
+                    )}
                   </div>
                   <span className={`status-badge status-${prayer.status}`}>
                     {prayer.status}

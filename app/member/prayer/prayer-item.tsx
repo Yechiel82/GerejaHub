@@ -12,6 +12,7 @@ interface PrayerItemProps {
     visibility: string;
     status: string;
     created_at: string;
+    is_anonymous?: boolean;
   };
 }
 
@@ -34,13 +35,60 @@ export function PrayerItem({ prayer }: PrayerItemProps) {
   };
 
   return (
-    <article>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start', marginBottom: '8px' }}>
-        <div>
-          <strong>{prayer.name}</strong>
-          <span style={{ marginLeft: '12px', color: 'var(--muted)', fontSize: '0.9rem' }}>
-            {prayer.visibility === 'church' ? '🌍 Shared with church' : '🔒 Private to leaders'} · {prayer.status}
-          </span>
+    <article className="prayer-card" style={{ background: 'var(--surface)', border: '1px solid var(--line)', borderRadius: '8px', padding: '20px' }}>
+      <div className="prayer-header" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px', flexWrap: 'wrap', gap: '12px' }}>
+        <div style={{ flex: '1', minWidth: '200px' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px', flexWrap: 'wrap' }}>
+            <strong style={{ fontSize: '1.1rem' }}>
+              {prayer.is_anonymous ? (
+                <>
+                  Anonymous
+                  <span style={{ marginLeft: '8px', padding: '3px 10px', background: '#9e9e9e', color: '#fff', borderRadius: '4px', fontSize: '0.7rem', fontWeight: 'bold', letterSpacing: '0.5px' }}>
+                    YOUR PRAYER
+                  </span>
+                </>
+              ) : (
+                prayer.name
+              )}
+            </strong>
+          </div>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
+            <span className={`status-badge status-${prayer.status}`} style={{ fontSize: '0.85rem' }}>
+              {prayer.status}
+            </span>
+            <span style={{ color: 'var(--muted)', fontSize: '0.85rem' }}>
+              {prayer.visibility === 'church' ? '🌍 Shared with church' : '🔒 Private to leaders'}
+            </span>
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+          {!isEditing && canEdit && (
+            <button
+              onClick={() => setIsEditing(true)}
+              className="button secondary"
+              style={{ minHeight: '36px', padding: '8px 16px', fontSize: '0.9rem' }}
+            >
+              ✏️ Edit
+            </button>
+          )}
+          {!isEditing && (
+            <form action={deletePrayerRequest} style={{ display: 'inline' }}>
+              <input type="hidden" name="prayer_id" value={prayer.id} />
+              <button
+                type="submit"
+                onClick={(e) => {
+                  if (!confirm("Are you sure you want to delete this prayer request?")) {
+                    e.preventDefault();
+                  }
+                }}
+                className="button secondary"
+                style={{ minHeight: '36px', padding: '8px 16px', fontSize: '0.9rem', color: 'var(--coral)', borderColor: 'var(--coral)' }}
+                disabled={isDeleting}
+              >
+                🗑️ Delete
+              </button>
+            </form>
+          )}
         </div>
       </div>
 
@@ -52,13 +100,10 @@ export function PrayerItem({ prayer }: PrayerItemProps) {
             value={editedRequest}
             onChange={(e) => setEditedRequest(e.target.value)}
             className="note-textarea"
-            style={{ minHeight: '100px', marginBottom: '8px' }}
+            style={{ minHeight: '120px', marginBottom: '12px', width: '100%' }}
             required
           />
-          <div style={{ display: 'flex', gap: '8px' }}>
-            <button type="submit" className="button primary" style={{ minHeight: '36px', padding: '8px 16px' }}>
-              Save Changes
-            </button>
+          <div style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
             <button
               type="button"
               onClick={() => {
@@ -66,49 +111,25 @@ export function PrayerItem({ prayer }: PrayerItemProps) {
                 setEditedRequest(prayer.request);
               }}
               className="button secondary"
-              style={{ minHeight: '36px', padding: '8px 16px' }}
+              style={{ minHeight: '38px', padding: '10px 20px' }}
             >
               Cancel
+            </button>
+            <button type="submit" className="button primary" style={{ minHeight: '38px', padding: '10px 20px' }}>
+              Save Changes
             </button>
           </div>
         </form>
       ) : (
         <>
-          <p>{prayer.request}</p>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '8px' }}>
-            <span className="item-meta">
+          <p style={{ marginBottom: '12px', lineHeight: '1.6', color: 'var(--ink)' }}>{prayer.request}</p>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingTop: '12px', borderTop: '1px solid var(--line)' }}>
+            <span style={{ color: 'var(--muted)', fontSize: '0.9rem' }}>
               {formatDisplayDate(prayer.created_at)}
-              {canEdit && <span style={{ marginLeft: '8px', color: 'var(--green)', fontSize: '0.85rem' }}>
-                (Editable for {Math.ceil(15 - diffMinutes)} more min)
+              {canEdit && <span style={{ marginLeft: '8px', color: 'var(--green)', fontWeight: '600' }}>
+                • Editable for {Math.ceil(15 - diffMinutes)} more min
               </span>}
             </span>
-            <div style={{ display: 'flex', gap: '8px' }}>
-              {canEdit && (
-                <button
-                  onClick={() => setIsEditing(true)}
-                  className="icon-button"
-                  style={{ fontSize: '0.85rem' }}
-                >
-                  ✏️ Edit
-                </button>
-              )}
-              <form action={deletePrayerRequest} style={{ display: 'inline' }}>
-                <input type="hidden" name="prayer_id" value={prayer.id} />
-                <button
-                  type="submit"
-                  onClick={(e) => {
-                    if (!confirm("Are you sure you want to delete this prayer request?")) {
-                      e.preventDefault();
-                    }
-                  }}
-                  className="icon-button"
-                  style={{ fontSize: '0.85rem', color: 'var(--coral)' }}
-                  disabled={isDeleting}
-                >
-                  🗑️ Delete
-                </button>
-              </form>
-            </div>
           </div>
         </>
       )}
