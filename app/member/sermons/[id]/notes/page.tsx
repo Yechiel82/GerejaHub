@@ -49,23 +49,6 @@ export default async function SermonNotesPage({ params }: PageProps) {
 
       <div className="notes-container">
         <div className="notes-sidebar">
-          <div className="sermon-info-card">
-            <h3>Sermon Details</h3>
-            {(sermon as any).description && (
-              <p>{(sermon as any).description}</p>
-            )}
-            {((sermon as any).video_url || (sermon as any).audio_url) && (
-              <a
-                href={(sermon as any).video_url || (sermon as any).audio_url || '#'}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="button primary"
-              >
-                ▶ {(sermon as any).video_url ? 'Watch Sermon' : 'Listen to Sermon'}
-              </a>
-            )}
-          </div>
-
           <div className="notes-tips">
             <h4>💡 Note-Taking Tips</h4>
             <ul>

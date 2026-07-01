@@ -944,7 +944,7 @@ textarea {
   gap: 10px;
 }
 
-.prayer-form input,
+.prayer-form input:not([type="checkbox"]),
 .prayer-form textarea,
 .themed-select {
   min-height: 48px;
@@ -956,14 +956,14 @@ textarea {
   transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
 }
 
-.prayer-form input:hover,
+.prayer-form input:not([type="checkbox"]):hover,
 .prayer-form textarea:hover,
 .themed-select:hover {
   border-color: rgba(47, 95, 79, 0.34);
   background-color: var(--surface);
 }
 
-.prayer-form input:focus,
+.prayer-form input:not([type="checkbox"]):focus,
 .prayer-form textarea:focus,
 .themed-select:focus {
   border-color: var(--green);
@@ -1009,6 +1009,7 @@ textarea {
 
 .check-row input {
   width: auto;
+  min-height: auto;
 }
 
 .admin-actions {

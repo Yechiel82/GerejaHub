@@ -43,7 +43,7 @@ export function PrayerForm({ defaultName, saved, error }: PrayerFormProps) {
             </label>
             <label className="check-row">
               <input type="checkbox" name="is_anonymous" />
-              <span>Post anonymously (your name will show as "Anonymous")</span>
+              <span>Post anonymously (your name will show as &quot;Anonymous&quot;)</span>
             </label>
             <label className="form-field">
               Request
