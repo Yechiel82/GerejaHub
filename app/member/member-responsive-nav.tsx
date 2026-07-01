@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { signOut } from "@/app/admin/actions";
 import type { Profile } from "@/lib/supabase/types";
 
@@ -40,6 +41,8 @@ function MemberNavigation({ profile, onNavigate }: { profile: Profile; onNavigat
 }
 
 export function MemberResponsiveNav({ profile }: { profile: Profile }) {
+  const router = useRouter();
+  const pathname = usePathname();
   const [isDesktop, setIsDesktop] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -68,6 +71,16 @@ export function MemberResponsiveNav({ profile }: { profile: Profile }) {
 
   return (
     <div className={`member-mobile-menu ${isOpen ? "member-mobile-menu-open" : ""}`}>
+      {pathname !== "/member" ? (
+        <button
+          className="member-mobile-back-button"
+          type="button"
+          aria-label="Go back"
+          onClick={() => router.back()}
+        >
+          <span aria-hidden="true">←</span>
+        </button>
+      ) : null}
       <button
         className="member-mobile-menu-button"
         type="button"

@@ -758,10 +758,10 @@ textarea {
   display: block;
 }
 
+.member-mobile-back-button,
 .member-mobile-menu-button {
   position: fixed;
   top: 16px;
-  right: 16px;
   z-index: 80;
   display: inline-flex;
   width: 46px;
@@ -773,6 +773,18 @@ textarea {
   background: rgba(255, 250, 242, 0.96);
   box-shadow: 0 12px 34px rgba(35, 31, 32, 0.14);
   cursor: pointer;
+}
+
+.member-mobile-back-button {
+  left: 16px;
+  color: var(--green);
+  font-size: 1.5rem;
+  font-weight: 850;
+  line-height: 1;
+}
+
+.member-mobile-menu-button {
+  right: 16px;
 }
 
 .member-mobile-menu-icon {
