@@ -666,6 +666,18 @@ textarea {
   padding: 12px;
 }
 
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
 .admin-page {
   display: grid;
   grid-template-columns: 280px minmax(0, 1fr);
@@ -736,6 +748,87 @@ textarea {
   align-content: start;
   gap: 24px;
   padding: 36px clamp(18px, 4vw, 56px);
+}
+
+.member-page .member-sidebar {
+  display: none;
+}
+
+.member-mobile-menu {
+  display: block;
+}
+
+.member-mobile-menu-button {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 80;
+  display: inline-flex;
+  width: 46px;
+  height: 46px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(47, 95, 79, 0.22);
+  border-radius: 8px;
+  background: rgba(255, 250, 242, 0.96);
+  box-shadow: 0 12px 34px rgba(35, 31, 32, 0.14);
+  cursor: pointer;
+}
+
+.member-mobile-menu-icon {
+  display: grid;
+  gap: 5px;
+  width: 22px;
+}
+
+.member-mobile-menu-icon span {
+  display: block;
+  height: 2px;
+  border-radius: 999px;
+  background: var(--green);
+}
+
+.member-mobile-backdrop,
+.member-mobile-drawer {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.member-mobile-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  border: 0;
+  background: rgba(35, 31, 32, 0.28);
+  cursor: pointer;
+}
+
+.member-mobile-drawer {
+  position: fixed;
+  inset: 0 0 0 auto;
+  z-index: 70;
+  display: flex;
+  width: min(320px, calc(100vw - 56px));
+  max-width: 100%;
+  height: 100vh;
+  flex-direction: column;
+  gap: 24px;
+  border-left: 1px solid var(--line);
+  background: var(--surface);
+  padding: 78px 20px 20px;
+  box-shadow: -22px 0 60px rgba(35, 31, 32, 0.18);
+  transform: translateX(100%);
+  transition: transform 0.22s ease, opacity 0.22s ease;
+}
+
+.member-mobile-menu-open .member-mobile-backdrop,
+.member-mobile-menu-open .member-mobile-drawer {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.member-mobile-menu-open .member-mobile-drawer {
+  transform: translateX(0);
 }
 
 .admin-heading p {
@@ -898,8 +991,30 @@ textarea {
     height: auto;
   }
 
+  .member-page > .admin-sidebar.member-sidebar {
+    display: none !important;
+  }
+
+  .member-page > .member-mobile-menu {
+    display: block !important;
+  }
+
+  .member-page .admin-content {
+    padding-top: 36px;
+  }
+
   .admin-stats {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 981px) {
+  .member-page > .admin-sidebar.member-sidebar {
+    display: flex !important;
+  }
+
+  .member-page > .member-mobile-menu {
+    display: none !important;
   }
 }
 
