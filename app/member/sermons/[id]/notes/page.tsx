@@ -4,7 +4,6 @@ import { createSupabaseServerClient } from '@/lib/supabase/server'
 import { formatDisplayDate } from '@/lib/data/content'
 import { NoteEditor } from './note-editor'
 import { notFound } from 'next/navigation'
-import Link from 'next/link'
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -38,9 +37,6 @@ export default async function SermonNotesPage({ params }: PageProps) {
   return (
     <MemberShell profile={profile}>
       <div className="admin-heading">
-        <Link href="/member/sermons" className="back-link">
-          ← Back to Sermons
-        </Link>
         <p className="section-kicker">Sermon Notes</p>
         <h1>{(sermon as any).title}</h1>
         <p className="sermon-meta-info">
@@ -84,7 +80,7 @@ export default async function SermonNotesPage({ params }: PageProps) {
         <div className="notes-editor-container">
           <NoteEditor
             sermonId={id}
-            initialContent={existingNote?.note || ''}
+            initialContent={(existingNote as any)?.content || ''}
             noteId={existingNote?.id}
           />
         </div>
