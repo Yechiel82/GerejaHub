@@ -61,7 +61,7 @@ export function EventRsvpButton({ eventId, currentStatus }: EventRsvpButtonProps
           className={`button ${status === 'not_going' ? 'danger' : 'secondary'}`}
           aria-label="RSVP as not going"
         >
-          {isPending && status === 'not_going' ? <LoadingSpinner size="small" /> : '✗'} Can't Go
+          {isPending && status === 'not_going' ? <LoadingSpinner size="small" /> : '✗'} Can&apos;t Go
         </button>
       </div>
     </div>
