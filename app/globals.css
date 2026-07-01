@@ -755,7 +755,17 @@ textarea {
 }
 
 .member-mobile-menu {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 79;
   display: block;
+  height: 78px;
+  border-bottom: 1px solid rgba(35, 31, 32, 0.1);
+  background: rgba(255, 250, 242, 0.72);
+  box-shadow: 0 10px 30px rgba(35, 31, 32, 0.08);
+  backdrop-filter: blur(16px);
 }
 
 .member-mobile-back-button,
@@ -768,11 +778,16 @@ textarea {
   height: 46px;
   align-items: center;
   justify-content: center;
-  border: 1px solid rgba(47, 95, 79, 0.22);
+  border: 0;
   border-radius: 8px;
-  background: rgba(255, 250, 242, 0.96);
-  box-shadow: 0 12px 34px rgba(35, 31, 32, 0.14);
+  background: transparent;
   cursor: pointer;
+}
+
+.member-mobile-back-button:hover,
+.member-mobile-menu-button:hover,
+.member-mobile-logo:hover {
+  background: rgba(47, 95, 79, 0.08);
 }
 
 .member-mobile-back-button {
@@ -785,6 +800,32 @@ textarea {
 
 .member-mobile-menu-button {
   right: 16px;
+}
+
+.member-mobile-logo {
+  position: fixed;
+  top: 16px;
+  left: 16px;
+  z-index: 80;
+  display: inline-flex;
+  width: 46px;
+  height: 46px;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+}
+
+.member-mobile-logo-with-back {
+  left: 70px;
+}
+
+.member-mobile-logo img {
+  display: block;
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
 }
 
 .member-mobile-menu-icon {
@@ -1012,7 +1053,7 @@ textarea {
   }
 
   .member-page .admin-content {
-    padding-top: 36px;
+    padding-top: 96px;
   }
 
   .admin-stats {

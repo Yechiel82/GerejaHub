@@ -1,131 +1,345 @@
-.quick-actions {
+.member-page {
+  background: #fffaf2;
+}
+
+.member-page .admin-content {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(255, 250, 242, 0.98)),
+    #fffaf2;
+}
+
+.member-dashboard {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
+  gap: 22px;
 }
 
-.quick-action-card {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 1.5rem;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
+.member-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: end;
+  gap: 22px;
+  overflow: hidden;
+  border: 1px solid rgba(47, 95, 79, 0.18);
   border-radius: 8px;
-  text-decoration: none;
-  color: inherit;
-  transition: all 0.2s;
-  position: relative;
+  background:
+    linear-gradient(135deg, rgba(255, 255, 255, 0.98), rgba(250, 255, 252, 0.95)),
+    #ffffff;
+  box-shadow: 0 16px 42px rgba(35, 31, 32, 0.06);
+  padding: clamp(24px, 4vw, 42px);
 }
 
-.quick-action-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  border-color: var(--primary);
+.member-hero-copy {
+  display: grid;
+  gap: 12px;
+  max-width: 720px;
 }
 
-.quick-action-icon {
-  font-size: 2rem;
-  margin-bottom: 0.5rem;
-}
-
-.quick-action-card strong {
-  font-size: 1rem;
-  margin-bottom: 0.25rem;
-}
-
-.quick-action-card p {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
+.member-hero h1 {
   margin: 0;
+  color: var(--ink);
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: clamp(2.25rem, 5vw, 4.7rem);
+  line-height: 0.98;
 }
 
-.quick-action-card .badge {
-  position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  background: var(--error);
-  color: white;
-  border-radius: 12px;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.75rem;
-  font-weight: bold;
+.member-hero p {
+  max-width: 560px;
+  margin: 0;
+  color: var(--muted);
+  font-size: 1.04rem;
+  line-height: 1.65;
 }
 
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.dashboard-card {
-  padding: 1.5rem;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-}
-
-.dashboard-card h3 {
-  margin: 0 0 0.5rem 0;
-  font-size: 1.125rem;
-}
-
-.dashboard-card-meta {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  margin: 0.25rem 0;
-}
-
-.dashboard-card .button {
-  margin-top: 1rem;
-}
-
-.sermon-featured {
-  display: flex;
-  gap: 2rem;
-  padding: 1.5rem;
-  background: var(--bg-secondary);
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  margin-top: 1rem;
-}
-
-.sermon-featured > div:first-child {
-  flex: 1;
-}
-
-.sermon-featured h3 {
-  margin: 0 0 0.5rem 0;
-}
-
-.sermon-meta {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  margin: 0.25rem 0;
-}
-
-.sermon-scripture {
-  font-size: 0.875rem;
-  color: var(--primary);
-  margin: 0.5rem 0;
-}
-
+.member-hero-actions,
 .sermon-actions {
   display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.member-hero-actions {
+  justify-content: flex-end;
+}
+
+.member-action-button {
+  display: inline-flex;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 8px;
+  padding: 11px 16px;
+  font-size: 0.93rem;
+  font-weight: 850;
+  line-height: 1;
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease, background 0.18s ease;
+}
+
+.member-action-button:hover {
+  transform: translateY(-1px);
+}
+
+.primary-action {
+  border: 1px solid var(--green);
+  background: var(--green);
+  color: var(--white);
+  box-shadow: 0 14px 28px rgba(47, 95, 79, 0.2);
+}
+
+.secondary-action {
+  border: 1px solid rgba(47, 95, 79, 0.2);
+  background: rgba(255, 255, 255, 0.72);
+  color: var(--green-dark);
+}
+
+.secondary-action:hover {
+  border-color: rgba(47, 95, 79, 0.36);
+  background: var(--white);
+}
+
+.member-notice-panel {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid rgba(47, 95, 79, 0.18);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  box-shadow: 0 10px 30px rgba(35, 31, 32, 0.05);
+  padding: 18px 20px;
+}
+
+.member-notice-icon {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  place-items: center;
+  border-radius: 8px;
+  background: rgba(47, 95, 79, 0.1);
+  color: var(--green-dark);
+  font-size: 1.35rem;
+  font-weight: 900;
+}
+
+.member-notice-copy {
+  display: grid;
+  gap: 4px;
+}
+
+.member-notice-copy span,
+.member-panel-heading p,
+.member-list-item p,
+.member-prayer-item p,
+.member-ministry-item p,
+.sermon-meta,
+.member-empty-state p {
+  color: var(--muted);
+}
+
+.member-notice-copy span {
+  font-size: 0.78rem;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.member-notice-copy h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1.08rem;
+  line-height: 1.25;
+}
+
+.member-notice-copy p {
+  margin: 0;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+.member-notice-link {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid rgba(47, 95, 79, 0.2);
+  border-radius: 8px;
+  padding: 10px 14px;
+  color: var(--green-dark);
+  font-size: 0.9rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.member-notice-link:hover {
+  border-color: rgba(47, 95, 79, 0.36);
+  background: rgba(47, 95, 79, 0.06);
+}
+
+.member-content-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.75fr);
+  align-items: start;
+  gap: 22px;
+}
+
+.member-primary-column,
+.member-secondary-column {
+  display: grid;
+  gap: 22px;
+}
+
+.member-dashboard-panel {
+  display: grid;
+  gap: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 12px 36px rgba(35, 31, 32, 0.055);
+  padding: clamp(18px, 3vw, 24px);
+}
+
+.member-panel-heading {
+  display: flex;
   align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.member-panel-heading h2 {
+  margin: 0 0 6px;
+  color: var(--ink);
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: clamp(1.45rem, 2.6vw, 2.05rem);
+  line-height: 1.05;
+}
+
+.member-panel-heading p {
+  margin: 0;
+  font-size: 0.92rem;
+}
+
+.member-panel-heading > a,
+.member-empty-state a {
+  color: var(--green);
+  font-size: 0.9rem;
+  font-weight: 850;
+  white-space: nowrap;
+}
+
+.member-list,
+.member-prayer-list,
+.member-ministry-list {
+  display: grid;
+  gap: 12px;
+}
+
+.member-list-item,
+.member-prayer-item,
+.member-ministry-item {
+  border: 1px solid rgba(35, 31, 32, 0.09);
+  border-radius: 8px;
+  background: rgba(255, 253, 248, 0.78);
+}
+
+.member-list-item {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  padding: 14px;
+}
+
+.member-date-box {
+  display: grid;
+  min-height: 62px;
+  place-items: center;
+  border-radius: 8px;
+  background: rgba(47, 95, 79, 0.1);
+  color: var(--green-dark);
+  text-align: center;
+}
+
+.member-date-box span {
+  font-size: 0.72rem;
+  font-weight: 850;
+  text-transform: uppercase;
+}
+
+.member-date-box strong {
+  font-size: 1.45rem;
+  line-height: 1;
+}
+
+.member-list-item h3,
+.member-prayer-item h3,
+.member-ministry-item h3,
+.member-sermon-card h3,
+.member-empty-state h3 {
+  margin: 0;
+  color: var(--ink);
+  font-size: 1rem;
+  line-height: 1.3;
+}
+
+.member-list-item p,
+.member-prayer-item p,
+.member-ministry-item p,
+.member-sermon-card p,
+.member-empty-state p {
+  margin: 6px 0 0;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+
+.member-prayer-item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 14px;
+  padding: 15px;
+}
+
+.member-prayer-meta {
+  display: grid;
+  justify-items: end;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.member-ministry-item {
+  padding: 15px;
+}
+
+.member-sermon-card {
+  display: grid;
+  gap: 10px;
+}
+
+.member-sermon-card .sermon-scripture {
+  display: inline-flex;
+  width: fit-content;
+  border-left: 3px solid var(--gold);
+  padding-left: 10px;
+  color: var(--green-dark);
+  font-weight: 800;
+}
+
+.sermon-panel {
+  background:
+    linear-gradient(180deg, rgba(47, 95, 79, 0.05), rgba(255, 255, 255, 0) 42%),
+    rgba(255, 255, 255, 0.88);
 }
 
 .status-badge {
-  display: inline-block;
-  padding: 0.25rem 0.75rem;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 600;
+  display: inline-flex;
+  width: fit-content;
+  align-items: center;
+  border-radius: 999px;
+  padding: 5px 9px;
+  font-size: 0.72rem;
+  font-weight: 850;
+  line-height: 1;
   text-transform: uppercase;
 }
 
@@ -144,23 +358,66 @@
   color: #991b1b;
 }
 
-.item-meta {
-  font-size: 0.75rem;
-  color: var(--text-secondary);
+.member-empty-state {
+  border: 1px dashed rgba(47, 95, 79, 0.24);
+  border-radius: 8px;
+  background: rgba(255, 253, 248, 0.8);
+  padding: 18px;
 }
 
-@media (max-width: 768px) {
-  .quick-actions {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .sermon-featured {
-    flex-direction: column;
-  }
-
-  .dashboard-grid {
+@media (max-width: 1120px) {
+  .member-content-grid {
     grid-template-columns: 1fr;
   }
 }
 
-/* Made with Bob */
+@media (max-width: 760px) {
+  .member-hero {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .member-hero-actions {
+    justify-content: flex-start;
+  }
+
+  .member-notice-panel {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .member-notice-link {
+    width: fit-content;
+  }
+
+  .member-panel-heading,
+  .member-prayer-item {
+    grid-template-columns: 1fr;
+  }
+
+  .member-panel-heading {
+    display: grid;
+  }
+
+  .member-prayer-meta {
+    justify-items: start;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 520px) {
+  .member-action-button {
+    width: 100%;
+  }
+
+  .member-list-item {
+    grid-template-columns: 1fr;
+  }
+
+  .member-date-box {
+    min-height: 54px;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    gap: 8px;
+  }
+}

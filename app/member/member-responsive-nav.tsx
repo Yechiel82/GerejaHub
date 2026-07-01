@@ -31,7 +31,6 @@ function MemberNavigation({ profile, onNavigate }: { profile: Profile; onNavigat
       </nav>
       <div className="admin-account">
         <span>{profile.email}</span>
-        <span>{profile.role}</span>
         <form action={signOut}>
           <button type="submit">Sign out</button>
         </form>
@@ -81,6 +80,13 @@ export function MemberResponsiveNav({ profile }: { profile: Profile }) {
           <span aria-hidden="true">←</span>
         </button>
       ) : null}
+      <Link
+        className={`member-mobile-logo ${pathname !== "/member" ? "member-mobile-logo-with-back" : ""}`}
+        href="/member"
+        aria-label="GerejaHub member home"
+      >
+        <img src="/media/logo.png" alt="" />
+      </Link>
       <button
         className="member-mobile-menu-button"
         type="button"
